@@ -12,8 +12,31 @@
 
 SRCS=	main.c\
 		ft_atoi.c\
-		philo.c
+		philo.c\
+		utils.c
+
+OBJS=	${SRCS:.c=.o}
+
+NAME=	philo
 
 CC=		gcc
 
 FLAGS=	-Wall -Werror -Wextra -pthread
+
+.c.o:
+		${CC} ${FLAGS} -c $< -o ${<:.c=.o}
+
+${NAME}:	${OBJS}
+		${CC} ${FLAGS} ${OBJS} -o ${NAME}
+
+all:		${NAME}
+
+clean:
+		rm -f ${OBJS}
+
+fclean:		clean
+		rm -f ${NAME}
+
+re:			fclean all
+
+.PHONY:		all clean fclean re

@@ -10,13 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <errno.h>
-#include <sys/time.h>
-#include <pthread.h>
-#include <stdlib.h>
+#ifndef PHILO_H
+# define PHILO_H
+
+# include <string.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <errno.h>
+# include <sys/time.h>
+# include <pthread.h>
+# include <stdlib.h>
+
+# define SLEEPING s
+# define EATING e
+# define THINKING t
+
+
 
 typedef void (*t_test)(void);
 
@@ -30,9 +39,11 @@ typedef struct s_args{
 
 typedef struct s_philo{
     pthread_t   *t_id;
-	
+	char        state;
 }   t_philo;
 
 int	        ft_atoi(const char *str);
 void		routine(t_philo *philo);
 void		ft_error(char *str);
+
+#endif
