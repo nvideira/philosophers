@@ -6,13 +6,12 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:02:11 by nvideira          #+#    #+#             */
-/*   Updated: 2022/08/31 19:07:45 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/09/04 00:36:19 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
-
 # include <string.h>
 # include <stdio.h>
 # include <unistd.h>
@@ -20,14 +19,10 @@
 # include <sys/time.h>
 # include <pthread.h>
 # include <stdlib.h>
+# define EATING 1
+# define SLEEPING 2
+# define THINKING 3
 
-# define SLEEPING s
-# define EATING e
-# define THINKING t
-
-
-
-typedef void (*t_test)(void);
 
 typedef struct s_args{
     int n_philo;
@@ -38,12 +33,16 @@ typedef struct s_args{
 }   t_args;
 
 typedef struct s_philo{
-    pthread_t   *t_id;
-	char        state;
+    pthread_t		*t_id;
+	int				error;
+	int				state;
+	int				num;
+	pthread_mutex_t	lock;
+	struct	timeval	date;
 }   t_philo;
 
 int	        ft_atoi(const char *str);
-void		routine(t_philo *philo);
+void		routine(t_philo *philo, t_args *args, int i);
 void		ft_error(char *str);
 
 #endif
