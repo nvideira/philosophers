@@ -6,41 +6,83 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:30:57 by nvideira          #+#    #+#             */
-/*   Updated: 2022/09/04 00:36:52 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/09/06 20:28:56 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	get_args(t_args *args, char **av)
+int	only_digits(char **av)
 {
+	int	i;
+	int	j;
+
+	i = 0;
+	while (av[i])
+	{
+		j = 0;
+		while (av[i][j])
+		{
+			if (av[i][j] < '0' || av[i][j] > '9')
+				return (0);
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}
+
+int	is_int(t_args args, char **av)
+{
+	if (ft_itoa(args.n_philo) != av[1] || ft_itoa(args.time_die) != av[2]
+		|| ft_itoa(args.time_eat) != av[3] || ft_itoa(args.time_sleep) != av[4])
+		return (0);
+	return (1);
+}
+
+int	get_args(t_args *args, char **av)
+{
+	if (!only_digits(av))
+		return (0);
 	args->n_philo = ft_atoi(av[1]);
 	args->time_die = ft_atoi(av[2]);
 	args->time_eat = ft_atoi(av[3]);
 	args->time_sleep = ft_atoi(av[4]);
 	if (av[5])
 		args->limit = ft_atoi(av[5]);
+	if (args->n_philo < 1 || args->time_die < 1 || args->time_eat < 1
+		|| args->time_sleep < 1)
+		return (0);
+	if (!is_int(*args, av))
+		return (0);
+	return (1);
 }
 
 int	main(int ac, char **av)
 {
-	t_args			args;
-	t_philo			*philo;
-	unsigned int	i;
+	t_philo	*philo;
+	t_args	args;
+	int		error;
+	int		i;
 
 	i = 0;
 	if (ac < 5 || ac > 6)
 		return (printf("Wrong number of arguments.\n"));
-	get_args(&args, av);
+	error = get_args(&args, av);
+	if (!error)
+		ft_error("Bad input");
 	philo = (t_philo *)malloc(args.n_philo * sizeof(t_philo));
-	if (pthread_mutex_init(&philo->lock, NULL) != 0)
-		ft_error("Mutex init failed.");
-	while (args.n_philo--)
+	philo->args = args;
+	while (++i <= philo->args.n_philo)
 	{
-		philo->error = pthread_create(&philo->t_id[i], NULL, &routine, &args);
-		if (philo->error != 0)
+		philo[i - 1] = philo_create(i);
+		if (i > 1)
+			philo[i - 1].left = philo[i - 2].fork;
+		else
+			philo[i - 1].left = philo[philo->args.n_philo - 1].fork;
+		error = pthread_create(&philo[i - 1].t_id, NULL, &routine, philo);
+		if (error != 0)
 			ft_error("An error has ocurred when creating threads");
-		i++;
 	}
 	return (0);
 }

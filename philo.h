@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:02:11 by nvideira          #+#    #+#             */
-/*   Updated: 2022/09/04 00:36:19 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/09/06 20:37:50 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,20 @@ typedef struct s_args{
 }   t_args;
 
 typedef struct s_philo{
-    pthread_t		*t_id;
-	int				error;
+    pthread_t		t_id;
 	int				state;
 	int				num;
-	pthread_mutex_t	lock;
+	pthread_mutex_t	*fork;
+	pthread_mutex_t	*left;
 	struct	timeval	date;
+	t_args			args;
 }   t_philo;
 
 int	        ft_atoi(const char *str);
-void		routine(t_philo *philo, t_args *args, int i);
+char		*ft_itoa(int n);
+char		*ft_strdup(const char *s1);
+void		*routine(t_philo *philo);
 void		ft_error(char *str);
+t_philo 	philo_create(int num);
 
 #endif
