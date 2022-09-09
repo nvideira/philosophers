@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 23:15:44 by nvideira          #+#    #+#             */
-/*   Updated: 2022/09/06 20:35:13 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/09/09 15:20:36 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,11 @@ t_philo philo_create(int num)
 	return (philo);
 }
 
-void	*routine(t_philo *philo)
+void	*routine(void *arg)
 {
+	t_philo *philo;
+
+	philo = (t_philo *)arg;
 	while (1)
 	{
 		if (philo->state == EATING)

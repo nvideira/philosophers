@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:30:57 by nvideira          #+#    #+#             */
-/*   Updated: 2022/09/06 20:28:56 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/09/09 15:33:34 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	only_digits(char **av)
 	int	i;
 	int	j;
 
-	i = 0;
+	i = 1;
 	while (av[i])
 	{
 		j = 0;
@@ -65,7 +65,7 @@ int	main(int ac, char **av)
 	int		error;
 	int		i;
 
-	i = 0;
+	i = -1;
 	if (ac < 5 || ac > 6)
 		return (printf("Wrong number of arguments.\n"));
 	error = get_args(&args, av);
@@ -75,12 +75,12 @@ int	main(int ac, char **av)
 	philo->args = args;
 	while (++i <= philo->args.n_philo)
 	{
-		philo[i - 1] = philo_create(i);
+		philo[i] = philo_create(i + 1);
 		if (i > 1)
-			philo[i - 1].left = philo[i - 2].fork;
+			philo[i].left = philo[i - 1].fork;
 		else
-			philo[i - 1].left = philo[philo->args.n_philo - 1].fork;
-		error = pthread_create(&philo[i - 1].t_id, NULL, &routine, philo);
+			philo[i].left = philo[philo->args.n_philo].fork;
+		error = pthread_create(&philo[i].t_id, NULL, &routine, (void *)(&philo[i]));
 		if (error != 0)
 			ft_error("An error has ocurred when creating threads");
 	}

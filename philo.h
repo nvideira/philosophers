@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:02:11 by nvideira          #+#    #+#             */
-/*   Updated: 2022/09/06 20:37:50 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/09/09 15:24:45 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,9 @@ typedef struct s_philo{
 
 int	        ft_atoi(const char *str);
 char		*ft_itoa(int n);
+size_t		ft_strlen(const char *str);
 char		*ft_strdup(const char *s1);
-void		*routine(t_philo *philo);
+void		*routine(void *arg);
 void		ft_error(char *str);
 t_philo 	philo_create(int num);
 

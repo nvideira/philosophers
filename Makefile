@@ -6,7 +6,7 @@
 #    By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/28 21:10:24 by nvideira          #+#    #+#              #
-#    Updated: 2022/09/06 20:36:46 by nvideira         ###   ########.fr        #
+#    Updated: 2022/09/09 15:24:00 by nvideira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ SRCS=	main.c\
 		philo.c\
 		utils.c\
 		ft_itoa.c\
-		ft_strdup.c
+		ft_strdup.c\
+		ft_strlen.c
 
 OBJS=	${SRCS:.c=.o}
 
