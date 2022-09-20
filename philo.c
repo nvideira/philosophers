@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 23:15:44 by nvideira          #+#    #+#             */
-/*   Updated: 2022/09/09 15:20:36 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/09/12 22:52:53 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,23 @@ void	*routine(void *arg)
 		{
 			philo->state = SLEEPING;
 			gettimeofday(&philo->date, NULL);
-			printf("%ld: %d is sleeping.", philo->date.tv_usec, philo->num);
-			usleep(philo->args.time_sleep * 1000);
+			printf("%ld: %d is sleeping.\n", philo->date.tv_usec, philo->num);
+			usleep(philo->args->time_sleep * 1000);
 		}
 		else if (philo->state == SLEEPING)
 		{
 			philo->state = THINKING;
 			gettimeofday(&philo->date, NULL);
-			printf("%ld: %d is thinking.", philo->date.tv_usec, philo->num);
-			usleep(philo->args.time_sleep * 1000);
+			printf("%ld: %d is thinking.\n", philo->date.tv_usec, philo->num);
+			usleep(philo->args->time_sleep * 1000);
 		}
 		else if (philo->state == THINKING)
 		{
 			philo->state = EATING;
 			gettimeofday(&philo->date, NULL);
-			printf("%ld: %d has taken a fork.", philo->date.tv_usec, philo->num);
-			printf("%ld: %d is eating.", philo->date.tv_usec, philo->num);
-			usleep(philo->args.time_eat * 1000);
+			printf("%ld: %d has taken a fork.\n", philo->date.tv_usec, philo->num);
+			printf("%ld: %d is eating.\n", philo->date.tv_usec, philo->num);
+			usleep(philo->args->time_eat * 1000);
 		}
 	}
 }

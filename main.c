@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:30:57 by nvideira          #+#    #+#             */
-/*   Updated: 2022/09/09 15:33:34 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/09/20 16:33:53 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,13 @@ int	only_digits(char **av)
 
 int	is_int(t_args args, char **av)
 {
-	if (ft_itoa(args.n_philo) != av[1] || ft_itoa(args.time_die) != av[2]
-		|| ft_itoa(args.time_eat) != av[3] || ft_itoa(args.time_sleep) != av[4])
+	if (ft_strncmp(ft_itoa(args.n_philo), av[1], ft_strlen(av[1]))
+		|| ft_strncmp(ft_itoa(args.time_die), av[2], ft_strlen(av[2]))
+		|| ft_strncmp(ft_itoa(args.time_eat), av[3], ft_strlen(av[3]))
+		|| ft_strncmp(ft_itoa(args.time_sleep), av[4], ft_strlen(av[4])))
+	{
 		return (0);
+	}	
 	return (1);
 }
 
@@ -72,17 +76,22 @@ int	main(int ac, char **av)
 	if (!error)
 		ft_error("Bad input");
 	philo = (t_philo *)malloc(args.n_philo * sizeof(t_philo));
-	philo->args = args;
-	while (++i <= philo->args.n_philo)
+	philo->args = &args;
+	while (++i < philo->args->n_philo)
 	{
+		printf("teste0\n");
+		printf("i-> %d; n_philo-> %d\n", i, philo->args->n_philo);
 		philo[i] = philo_create(i + 1);
-		if (i > 1)
-			philo[i].left = philo[i - 1].fork;
-		else
-			philo[i].left = philo[philo->args.n_philo].fork;
+		printf("teste\n");
+	}
+	printf("teste2\n");
+	i = 0;
+	while (i < philo->args->n_philo)
+	{
 		error = pthread_create(&philo[i].t_id, NULL, &routine, (void *)(&philo[i]));
 		if (error != 0)
 			ft_error("An error has ocurred when creating threads");
+		i++;
 	}
 	return (0);
 }
