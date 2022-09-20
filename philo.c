@@ -6,21 +6,22 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 23:15:44 by nvideira          #+#    #+#             */
-/*   Updated: 2022/09/12 22:52:53 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/09/20 17:58:23 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_philo philo_create(int num)
+t_philo philo_create(int num, t_args args)
 {
 	t_philo philo;
 
 	philo.num = num;
 	philo.state = THINKING;
+	philo.args = &args;
 	philo.fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	if (pthread_mutex_init(philo.fork, NULL) != 0)
-		ft_error("Mutex init failed.");
+	// if (pthread_mutex_init(philo.args->fork, NULL) != 0)
+	// 	ft_error("Mutex init failed.");
 	return (philo);
 }
 

@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:30:57 by nvideira          #+#    #+#             */
-/*   Updated: 2022/09/20 16:33:53 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/09/20 17:56:43 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,22 +76,29 @@ int	main(int ac, char **av)
 	if (!error)
 		ft_error("Bad input");
 	philo = (t_philo *)malloc(args.n_philo * sizeof(t_philo));
-	philo->args = &args;
-	while (++i < philo->args->n_philo)
+	if (!philo)
+		ft_error("malloc error\n");
+	// args.fork = (pthread_mutex_t *)malloc(args.n_philo * sizeof(pthread_mutex_t));
+	// if (pthread_mutex_init(philo->args->fork, NULL) != 0)
+	// 	ft_error("Mutex init failed.");
+	while (++i < args.n_philo)
 	{
-		printf("teste0\n");
-		printf("i-> %d; n_philo-> %d\n", i, philo->args->n_philo);
-		philo[i] = philo_create(i + 1);
-		printf("teste\n");
+
+		philo[i] = philo_create(i + 1, args);
+
+
 	}
-	printf("teste2\n");
+
 	i = 0;
-	while (i < philo->args->n_philo)
+	while (i < args.n_philo)
 	{
 		error = pthread_create(&philo[i].t_id, NULL, &routine, (void *)(&philo[i]));
 		if (error != 0)
 			ft_error("An error has ocurred when creating threads");
 		i++;
 	}
+	i = 0;
+	while (pthread_join(philo[i].t_id, NULL))
+		i++;
 	return (0);
 }
