@@ -78,15 +78,12 @@ int	main(int ac, char **av)
 	philo = (t_philo *)malloc(args.n_philo * sizeof(t_philo));
 	if (!philo)
 		ft_error("malloc error\n");
-	// args.fork = (pthread_mutex_t *)malloc(args.n_philo * sizeof(pthread_mutex_t));
+	args.fork = (pthread_mutex_t *)malloc(args.n_philo * sizeof(pthread_mutex_t));
 	// if (pthread_mutex_init(philo->args->fork, NULL) != 0)
 	// 	ft_error("Mutex init failed.");
 	while (++i < args.n_philo)
 	{
-
-		philo[i] = philo_create(i + 1, args);
-
-
+		philo[i] = philo_create(i + 1, &args);
 	}
 
 	i = 0;

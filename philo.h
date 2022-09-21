@@ -30,6 +30,8 @@ typedef struct s_args{
     int time_eat;
     int time_sleep;
 	int limit;
+	pthread_mutex_t	*fork;
+	pthread_mutex_t	*left;
 }   t_args;
 
 typedef struct s_philo{
@@ -38,8 +40,6 @@ typedef struct s_philo{
 	int				num;
 	struct	timeval	date;
 	t_args			*args;
-	pthread_mutex_t	*fork;
-	pthread_mutex_t	*left;
 }   t_philo;
 
 int		ft_atoi(const char *str);
@@ -49,6 +49,6 @@ char	*ft_strdup(const char *s1);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	*routine(void *arg);
 void	ft_error(char *str);
-t_philo	philo_create(int num, t_args args);
+t_philo	philo_create(int num, t_args *args);
 
 #endif
