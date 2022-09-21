@@ -68,34 +68,30 @@ int	main(int ac, char **av)
 {
 	t_philo	*philo;
 	t_args	args;
-	int		error;
 	int		i;
 
 	i = -1;
 	if (ac < 5 || ac > 6)
 		return (printf("Wrong number of arguments.\n"));
-	error = get_args(&args, av);
-	if (!error)
+	if (!get_args(&args, av))
 		ft_error("Bad input");
 	philo = (t_philo *)malloc(args.n_philo * sizeof(t_philo));
 	if (!philo)
 		ft_error("malloc error\n");
 	args.fork = (pthread_mutex_t *)malloc(args.n_philo * sizeof(pthread_mutex_t));
-	// if (pthread_mutex_init(philo->args->fork, NULL) != 0)
-	// 	ft_error("Mutex init failed.");
+	init_mutex(&args);
 	while (++i < args.n_philo)
-	{
 		philo[i] = philo_create(i + 1, &args);
-	}
-
 	i = 0;
-	while (i < args.n_philo)
-	{
-		error = pthread_create(&philo[i].t_id, NULL, &routine, (void *)(&philo[i]));
-		if (error != 0)
+	// while (++i < args.n_philo)
+	// 	philo[i].args->left = philo[i-1].args->fork;
+	// philo[0].args->left = philo[args.n_philo - 1].args->fork;
+	//printf("left-> %p\nfork-> %p\n", &philo[0].args->left, &philo[args.n_philo - 1].args->fork);
+	//printf("left-> %p\nfork-> %p\n", &philo[1].args->left, &philo[0].args->fork);
+	i = -1;
+	while (++i < args.n_philo)
+		if (pthread_create(&philo[i].t_id, NULL, &routine, (void *)(&philo[i])))
 			ft_error("An error has ocurred when creating threads");
-		i++;
-	}
 	i = 0;
 	while (pthread_join(philo[i].t_id, NULL))
 		i++;

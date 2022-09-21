@@ -12,20 +12,20 @@
 
 #include "philo.h"
 
-int	time_elapsed(struct timeval start)
+int	time_elapsed(t_philo *philo)
 {
 	struct timeval	current_time;
-	long long		diff;
+	long			diff;
 
 	gettimeofday(&current_time, NULL);
-	diff = (current_time.tv_sec - start.tv_sec);
+	diff = (current_time.tv_usec - philo->date.tv_usec);
 	return (diff);
 }
 
-void	check_death(t_philo *philo)
-{
+// void	check_death(t_philo *philo)
+// {
 	
-}
+// }
 
 t_philo philo_create(int num, t_args *args)
 {
@@ -35,15 +35,14 @@ t_philo philo_create(int num, t_args *args)
 	philo.state = THINKING;
 	philo.dead = 0;
 	philo.args = args;
-	philo.args->fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	if (pthread_mutex_init(philo.args->fork, NULL) != 0)
-		ft_error("Mutex init failed.");
+	gettimeofday(&philo.start_time, NULL);
 	return (philo);
 }
 
 void	*routine(void *arg)
 {
 	t_philo *philo;
+	long time;
 
 	philo = (t_philo *)arg;
 	while (1)
@@ -51,26 +50,32 @@ void	*routine(void *arg)
 		if (philo->state == EATING)
 		{
 			philo->state = SLEEPING;
-			gettimeofday(&philo->date, NULL);
-			printf("%ld: %d is sleeping.\n", philo->date.tv_usec, philo->num);
+			time = time_elapsed(philo);
+			printf("%ld: %d is sleeping.\n", time, philo->num);
 			usleep(philo->args->time_sleep * 1000);
 		}
 		else if (philo->state == SLEEPING)
 		{
 			philo->state = THINKING;
-			gettimeofday(&philo->date, NULL);
-			printf("%ld: %d is thinking.\n", philo->date.tv_usec, philo->num);
+			time = time_elapsed(philo);
+			printf("%ld: %d is thinking.\n", time, philo->num);
 			usleep(philo->args->time_sleep * 1000);
 		}
 		else if (philo->state == THINKING)
 		{
+			time = time_elapsed(philo);
+			pthread_mutex_lock(philo->args->fork);
+			printf("%ld: %d has taken a fork.\n", time, philo->num);
+			//pthread_mutex_lock(philo->args->left);
+			//printf("%ld: %d has taken a fork.\n", philo->date.tv_usec, philo->num);
 			philo->state = EATING;
-			gettimeofday(&philo->date, NULL);
-			printf("%ld: %d has taken a fork.\n", philo->date.tv_usec, philo->num);
-			printf("%ld: %d is eating.\n", philo->date.tv_usec, philo->num);
-			printf("time_eat-> %d\n", philo->args->time_eat);
+			time = time_elapsed(philo);
+			printf("%ld: %d is eating.\n", time, philo->num);
 			usleep(philo->args->time_eat * 1000);
-
+			pthread_mutex_unlock(philo->args->fork);
+			time = time_elapsed(philo);
+			printf("%ld: %d put down a fork.\n", time, philo->num);
+			//pthread_mutex_unlock(philo->args->left);
 		}
 	}
 }

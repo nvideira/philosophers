@@ -31,7 +31,7 @@ typedef struct s_args{
     int time_sleep;
 	int limit;
 	pthread_mutex_t	*fork;
-	pthread_mutex_t	*left;
+	pthread_mutex_t	death_trigger;
 }   t_args;
 
 typedef struct s_philo{
@@ -53,5 +53,6 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	*routine(void *arg);
 void	ft_error(char *str);
 t_philo	philo_create(int num, t_args *args);
+void	init_mutex(t_args *args);
 
 #endif
