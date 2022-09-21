@@ -54,6 +54,8 @@ int	get_args(t_args *args, char **av)
 	args->time_sleep = ft_atoi(av[4]);
 	if (av[5])
 		args->limit = ft_atoi(av[5]);
+	else
+		args->limit = -1;
 	if (args->n_philo < 1 || args->time_die < 1 || args->time_eat < 1
 		|| args->time_sleep < 1)
 		return (0);

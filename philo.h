@@ -38,8 +38,11 @@ typedef struct s_philo{
     pthread_t		t_id;
 	int				state;
 	int				num;
-	struct	timeval	date;
+	struct timeval	date;
 	t_args			*args;
+	int				dead;
+	double			last_meal;
+	struct timeval	start_time;
 }   t_philo;
 
 int		ft_atoi(const char *str);

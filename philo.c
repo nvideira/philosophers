@@ -12,12 +12,28 @@
 
 #include "philo.h"
 
+int	time_elapsed(struct timeval start)
+{
+	struct timeval	current_time;
+	long long		diff;
+
+	gettimeofday(&current_time, NULL);
+	diff = (current_time.tv_sec - start.tv_sec);
+	return (diff);
+}
+
+void	check_death(t_philo *philo)
+{
+	
+}
+
 t_philo philo_create(int num, t_args *args)
 {
 	t_philo philo;
 
 	philo.num = num;
 	philo.state = THINKING;
+	philo.dead = 0;
 	philo.args = args;
 	philo.args->fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	if (pthread_mutex_init(philo.args->fork, NULL) != 0)
