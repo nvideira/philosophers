@@ -25,7 +25,7 @@ long	time_elapsed(t_philo *philo)
 
 int	check_death(t_philo *philo)
 {
-	if (time_elapsed(philo) > philo->args->time_die)
+	if (time_elapsed(philo) - philo->last_meal > philo->args->time_die)
 	{
 		pthread_mutex_lock(&philo->args->death_trigger);
 		printf("%ld: %d died\n", time_elapsed(philo), philo->num);
@@ -79,18 +79,20 @@ void	*routine(void *arg)
 			if (check_death(philo))
 				break ;
 			time = time_elapsed(philo);
-			pthread_mutex_lock(philo->args->fork);
-			printf("%ld: %d has taken a fork.\n", time, philo->num);
-			//pthread_mutex_lock(philo->args->left);
-			//printf("%ld: %d has taken a fork.\n", philo->date.tv_usec, philo->num);
+			if (philo->num == philo->args->n_philo)
+				grab_forks(philo, philo->num, 1);
+			else
+				grab_forks(philo, philo->num, philo->num + 1);
 			philo->state = EATING;
 			time = time_elapsed(philo);
 			printf("%ld: %d is eating.\n", time, philo->num);
 			usleep(philo->args->time_eat * 1000);
-			pthread_mutex_unlock(philo->args->fork);
-			time = time_elapsed(philo);
-			printf("%ld: %d put down a fork.\n", time, philo->num);
-			//pthread_mutex_unlock(philo->args->left);
+			philo->last_meal = time;
+			if (philo->num == philo->args->n_philo)
+				drop_forks(philo, philo->num, 1);
+			else
+				drop_forks(philo, philo->num, philo->num + 1);
 		}
 	}
+	return (NULL);
 }

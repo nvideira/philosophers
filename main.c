@@ -95,5 +95,6 @@ int	main(int ac, char **av)
 	i = 0;
 	while (pthread_join(philo[i].t_id, NULL))
 		i++;
+	destroy_mutex(&args);
 	return (0);
 }

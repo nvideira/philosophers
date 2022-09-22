@@ -32,3 +32,44 @@ void	init_mutex(t_args *args)
 	if (pthread_mutex_init(&args->death_trigger, NULL))
 		ft_error("Mutex init failed.");
 }
+
+void	destroy_mutex(t_args *args)
+{
+	int	i;
+
+	i = 0;
+	while (i < args->n_philo)
+	{
+		if (pthread_mutex_destroy(&args->fork[i]))
+			ft_error("Mutex destroy failed.");
+		i++;
+	}
+	if (pthread_mutex_destroy(&args->death_trigger))
+		ft_error("Mutex destroy failed.");
+}
+
+void	grab_forks(t_philo *philo, int left, int right)
+{
+	if (philo->num % 2 == 0)
+	{
+		pthread_mutex_lock(&philo->args->fork[left]);
+		printf("%ld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
+		pthread_mutex_lock(&philo->args->fork[right]);
+		printf("%ld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
+	}
+	else
+	{
+		pthread_mutex_lock(&philo->args->fork[right]);
+		printf("%ld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
+		pthread_mutex_lock(&philo->args->fork[left]);
+		printf("%ld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
+	}
+}
+
+void	drop_forks(t_philo *philo, int left, int right)
+{
+		pthread_mutex_unlock(&philo->args->fork[left]);
+		printf("%ld: %d has dropped a fork.\n", time_elapsed(philo), philo->num);
+		pthread_mutex_unlock(&philo->args->fork[right]);
+		printf("%ld: %d has dropped a fork.\n", time_elapsed(philo), philo->num);
+}
