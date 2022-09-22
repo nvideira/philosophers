@@ -12,20 +12,29 @@
 
 #include "philo.h"
 
-int	time_elapsed(t_philo *philo)
+long	time_elapsed(t_philo *philo)
 {
 	struct timeval	current_time;
 	long			diff;
 
 	gettimeofday(&current_time, NULL);
-	diff = (current_time.tv_usec - philo->date.tv_usec);
+	diff = (current_time.tv_sec - philo->date.tv_sec) * 1000;
+	diff += (current_time.tv_usec - philo->date.tv_usec) / 1000;
 	return (diff);
 }
 
-// void	check_death(t_philo *philo)
-// {
-	
-// }
+int	check_death(t_philo *philo)
+{
+	if (time_elapsed(philo) > philo->args->time_die)
+	{
+		pthread_mutex_lock(&philo->args->death_trigger);
+		printf("%ld: %d died\n", time_elapsed(philo), philo->num);
+		pthread_mutex_unlock(&philo->args->death_trigger);
+		philo->dead = 1;
+		return (1);
+	}
+	return (0);
+}
 
 t_philo philo_create(int num, t_args *args)
 {
@@ -49,6 +58,8 @@ void	*routine(void *arg)
 	{
 		if (philo->state == EATING)
 		{
+			if (check_death(philo))
+				break ;
 			philo->state = SLEEPING;
 			time = time_elapsed(philo);
 			printf("%ld: %d is sleeping.\n", time, philo->num);
@@ -56,6 +67,8 @@ void	*routine(void *arg)
 		}
 		else if (philo->state == SLEEPING)
 		{
+			if (check_death(philo))
+				break ;
 			philo->state = THINKING;
 			time = time_elapsed(philo);
 			printf("%ld: %d is thinking.\n", time, philo->num);
@@ -63,6 +76,8 @@ void	*routine(void *arg)
 		}
 		else if (philo->state == THINKING)
 		{
+			if (check_death(philo))
+				break ;
 			time = time_elapsed(philo);
 			pthread_mutex_lock(philo->args->fork);
 			printf("%ld: %d has taken a fork.\n", time, philo->num);
