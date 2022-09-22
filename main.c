@@ -82,12 +82,6 @@ int	main(int ac, char **av)
 	init_mutex(&args);
 	while (++i < args.n_philo)
 		philo[i] = philo_create(i + 1, &args);
-	i = 0;
-	// while (++i < args.n_philo)
-	// 	philo[i].args->left = philo[i-1].args->fork;
-	// philo[0].args->left = philo[args.n_philo - 1].args->fork;
-	//printf("left-> %p\nfork-> %p\n", &philo[0].args->left, &philo[args.n_philo - 1].args->fork);
-	//printf("left-> %p\nfork-> %p\n", &philo[1].args->left, &philo[0].args->fork);
 	i = -1;
 	while (++i < args.n_philo)
 		if (pthread_create(&philo[i].t_id, NULL, &routine, (void *)(&philo[i])))
@@ -96,5 +90,7 @@ int	main(int ac, char **av)
 	while (pthread_join(philo[i].t_id, NULL))
 		i++;
 	destroy_mutex(&args);
+	free(philo);
+	free(args.fork);
 	return (0);
 }
