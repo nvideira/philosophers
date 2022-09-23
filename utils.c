@@ -53,23 +53,23 @@ void	grab_forks(t_philo *philo, int left, int right)
 	if (philo->num % 2 == 0)
 	{
 		pthread_mutex_lock(&philo->args->fork[left]);
-		printf("%ld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
+		printf("%lld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
 		pthread_mutex_lock(&philo->args->fork[right]);
-		printf("%ld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
+		printf("%lld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
 	}
 	else
 	{
 		pthread_mutex_lock(&philo->args->fork[right]);
-		printf("%ld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
+		printf("%lld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
 		pthread_mutex_lock(&philo->args->fork[left]);
-		printf("%ld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
+		printf("%lld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
 	}
 }
 
 void	drop_forks(t_philo *philo, int left, int right)
 {
 		pthread_mutex_unlock(&philo->args->fork[left]);
-		printf("%ld: %d has dropped a fork.\n", time_elapsed(philo), philo->num);
+		printf("%lld: %d has dropped a fork.\n", time_elapsed(philo), philo->num);
 		pthread_mutex_unlock(&philo->args->fork[right]);
-		printf("%ld: %d has dropped a fork.\n", time_elapsed(philo), philo->num);
+		printf("%lld: %d has dropped a fork.\n", time_elapsed(philo), philo->num);
 }

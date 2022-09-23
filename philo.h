@@ -41,23 +41,23 @@ typedef struct s_philo{
 	struct timeval	date;
 	t_args			*args;
 	int				dead;
-	long			last_meal;
-	struct timeval	start_time;
+	long long		last_meal;
+	long long		start_time;
 }   t_philo;
 
-int		ft_atoi(const char *str);
-char	*ft_itoa(int n);
-size_t	ft_strlen(const char *str);
-char	*ft_strdup(const char *s1);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-void	*routine(void *arg);
-void	ft_error(char *str);
-t_philo	philo_create(int num, t_args *args);
-void	init_mutex(t_args *args);
-void	destroy_mutex(t_args *args);
-void	grab_forks(t_philo *philo, int left, int right);
-void	drop_forks(t_philo *philo, int left, int right);
-int		check_death(t_philo *philo);
-long	time_elapsed(t_philo *philo);
+int			ft_atoi(const char *str);
+char		*ft_itoa(int n);
+size_t		ft_strlen(const char *str);
+char		*ft_strdup(const char *s1);
+int			ft_strncmp(const char *s1, const char *s2, size_t n);
+void		*routine(void *arg);
+void		ft_error(char *str);
+t_philo		philo_create(int num, t_args *args);
+void		init_mutex(t_args *args);
+void		destroy_mutex(t_args *args);
+void		grab_forks(t_philo *philo, int left, int right);
+void		drop_forks(t_philo *philo, int left, int right);
+int			check_death(t_philo *philo);
+long long	time_elapsed(t_philo *philo);
 
 #endif
