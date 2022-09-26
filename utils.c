@@ -41,16 +41,18 @@ void	destroy_mutex(t_args *args)
 	while (i < args->n_philo)
 	{
 		if (pthread_mutex_destroy(&args->fork[i]))
-			ft_error("Mutex destroy failed.");
+			ft_error("ForkMutex destroy failed.");
+		else
+			printf("Mutex destroyed successfully\n");
 		i++;
 	}
 	if (pthread_mutex_destroy(&args->death_trigger))
-		ft_error("Mutex destroy failed.");
+		ft_error("DeathMutex destroy failed.");
 }
 
 void	grab_forks(t_philo *philo, int left, int right)
 {
-	if (philo->num % 2 == 0)
+	if (philo->num % 2 == 1)
 	{
 		pthread_mutex_lock(&philo->args->fork[left]);
 		printf("%lld: %d has taken a fork.\n", time_elapsed(philo), philo->num);

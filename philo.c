@@ -47,8 +47,8 @@ t_philo philo_create(int num, t_args *args)
 	philo.dead = 0;
 	philo.args = args;
 	gettimeofday(&time, NULL);
-	philo.start_time = time.tv_sec * 1000;
-	philo.start_time += time.tv_usec / 1000;
+	philo.start_time = (time.tv_sec * 1000);
+	philo.start_time += (time.tv_usec / 1000);
 	philo.last_meal = philo.start_time;
 	return (philo);
 }
@@ -56,7 +56,6 @@ t_philo philo_create(int num, t_args *args)
 void	*routine(void *arg)
 {
 	t_philo		*philo;
-	long long	time;
 
 	philo = (t_philo *)arg;
 	while (1)
@@ -66,8 +65,7 @@ void	*routine(void *arg)
 			if (check_death(philo))
 				break ;
 			philo->state = SLEEPING;
-			time = time_elapsed(philo);
-			printf("%lld: %d is sleeping.\n", time, philo->num);
+			printf("%lld: %d is sleeping.\n", time_elapsed(philo), philo->num);
 			usleep(philo->args->time_sleep * 1000);
 		}
 		else if (philo->state == SLEEPING)
@@ -75,24 +73,20 @@ void	*routine(void *arg)
 			if (check_death(philo))
 				break ;
 			philo->state = THINKING;
-			time = time_elapsed(philo);
-			printf("%lld: %d is thinking.\n", time, philo->num);
-			usleep(philo->args->time_sleep * 1000);
+			printf("%lld: %d is thinking.\n", time_elapsed(philo), philo->num);
 		}
 		else if (philo->state == THINKING)
 		{
 			if (check_death(philo))
 				break ;
-			time = time_elapsed(philo);
 			if (philo->num == philo->args->n_philo)
 				grab_forks(philo, philo->num, 1);
 			else
 				grab_forks(philo, philo->num, philo->num + 1);
 			philo->state = EATING;
-			time = time_elapsed(philo);
-			printf("%lld: %d is eating.\n", time, philo->num);
+			printf("%lld: %d is eating.\n", time_elapsed(philo), philo->num);
 			usleep(philo->args->time_eat * 1000);
-			philo->last_meal = time;
+			philo->last_meal = time_elapsed(philo);
 			if (philo->num == philo->args->n_philo)
 				drop_forks(philo, philo->num, 1);
 			else
