@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 23:15:44 by nvideira          #+#    #+#             */
-/*   Updated: 2022/09/20 17:58:23 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/09/27 18:25:27 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	check_death(t_philo *philo)
 		pthread_mutex_lock(&philo->args->death_trigger);
 		printf("%lld: %d died\n", time_elapsed(philo), philo->num);
 		pthread_mutex_unlock(&philo->args->death_trigger);
-		philo->dead = 1;
+		philo->state = DEAD;
 		return (1);
 	}
 	return (0);
@@ -49,6 +49,7 @@ t_philo philo_create(int num, t_args *args)
 	gettimeofday(&time, NULL);
 	philo.start_time = (time.tv_sec * 1000);
 	philo.start_time += (time.tv_usec / 1000);
+	philo.n_meals = args->limit;
 	philo.last_meal = philo.start_time;
 	return (philo);
 }
@@ -58,7 +59,7 @@ void	*routine(void *arg)
 	t_philo		*philo;
 
 	philo = (t_philo *)arg;
-	while (1)
+	while (philo->n_meals)
 	{
 		if (philo->state == EATING)
 		{
@@ -79,19 +80,22 @@ void	*routine(void *arg)
 		{
 			if (check_death(philo))
 				break ;
-			if (philo->num == philo->args->n_philo)
-				grab_forks(philo, philo->num, 1);
-			else
-				grab_forks(philo, philo->num, philo->num + 1);
+			//if (philo->num == philo->args->n_philo)
+				grab_forks(philo, philo->num - 1, philo->num % philo->args->n_philo);
+			// else
+			// 	grab_forks(philo, philo->num, philo->num + 1);
 			philo->state = EATING;
 			printf("%lld: %d is eating.\n", time_elapsed(philo), philo->num);
 			usleep(philo->args->time_eat * 1000);
 			philo->last_meal = time_elapsed(philo);
-			if (philo->num == philo->args->n_philo)
-				drop_forks(philo, philo->num, 1);
-			else
-				drop_forks(philo, philo->num, philo->num + 1);
+			philo->n_meals--;
+			//if (philo->num == philo->args->n_philo)
+				drop_forks(philo, philo->num - 1, philo->num % philo->args->n_philo);
+			// else
+			// 	drop_forks(philo, philo->num, philo->num + 1);
 		}
+		else
+			break ;
 	}
 	return (NULL);
 }

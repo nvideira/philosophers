@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:02:11 by nvideira          #+#    #+#             */
-/*   Updated: 2022/09/20 17:57:54 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/09/27 18:07:20 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # define EATING 1
 # define SLEEPING 2
 # define THINKING 3
+# define DEAD 4
 
 
 typedef struct s_args{
@@ -41,6 +42,7 @@ typedef struct s_philo{
 	struct timeval	date;
 	t_args			*args;
 	int				dead;
+	int				n_meals;
 	long long		last_meal;
 	long long		start_time;
 }   t_philo;

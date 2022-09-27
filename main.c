@@ -75,6 +75,8 @@ int	main(int ac, char **av)
 		return (printf("Wrong number of arguments.\n"));
 	if (!get_args(&args, av))
 		ft_error("Bad input");
+	if (args.n_philo == 1)
+		return (printf("The philosopher can't eat. He died.\n"));
 	philo = (t_philo *)malloc(args.n_philo * sizeof(t_philo));
 	if (!philo)
 		ft_error("malloc error\n");
