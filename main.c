@@ -76,7 +76,7 @@ int	main(int ac, char **av)
 	if (!get_args(&args, av))
 		ft_error("Bad input");
 	if (args.n_philo == 1)
-		return (printf("The philosopher desperately looks for a second fork. His hunger grows at an unforgiving pace. If only his mother had taught him how to eat using only 1 fork, or even his bare hands. That wench! He died regretting every decision he ever made.\n"));
+		return (printf("%s: The philosopher desperately looks for a second fork. His hunger grows at an unforgiving pace. If only his mother had taught him how to eat using only 1 fork, or even his bare hands. That wench! He died regretting every decision he ever made.\n", av[2]));
 	philo = (t_philo *)malloc(args.n_philo * sizeof(t_philo));
 	if (!philo)
 		ft_error("malloc error\n");
