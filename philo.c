@@ -26,14 +26,15 @@ long long	time_elapsed(t_philo *philo)
 
 int	check_death(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->args->death_trigger);
+	
 	if (time_elapsed(philo) - philo->last_meal > philo->args->time_die)
 	{
-		pthread_mutex_lock(&philo->args->death_trigger);
 		printf("%lld: %d died\n", time_elapsed(philo), philo->num);
-		pthread_mutex_unlock(&philo->args->death_trigger);
 		philo->state = DEAD;
 		return (1);
 	}
+	pthread_mutex_unlock(&philo->args->death_trigger);
 	return (0);
 }
 
@@ -57,8 +58,10 @@ t_philo philo_create(int num, t_args *args)
 void	*routine(void *arg)
 {
 	t_philo		*philo;
+	t_args		*args;
 
 	philo = (t_philo *)arg;
+	args = philo->args;
 	while (philo->n_meals)
 	{
 		if (philo->state == EATING)
@@ -80,22 +83,21 @@ void	*routine(void *arg)
 		{
 			if (check_death(philo))
 				break ;
-			//if (philo->num == philo->args->n_philo)
-				grab_forks(philo, philo->num - 1, philo->num % philo->args->n_philo);
-			// else
-			// 	grab_forks(philo, philo->num, philo->num + 1);
+			if (grab_forks(philo, philo->num - 1, philo->num % philo->args->n_philo))
+				break ;
 			philo->state = EATING;
 			printf("%lld: %d is eating.\n", time_elapsed(philo), philo->num);
 			usleep(philo->args->time_eat * 1000);
 			philo->last_meal = time_elapsed(philo);
 			philo->n_meals--;
-			//if (philo->num == philo->args->n_philo)
-				drop_forks(philo, philo->num - 1, philo->num % philo->args->n_philo);
-			// else
-			// 	drop_forks(philo, philo->num, philo->num + 1);
+			drop_forks(philo, philo->num - 1, philo->num % philo->args->n_philo);
 		}
 		else
 			break ;
 	}
+	pthread_mutex_unlock(&philo->args->death_trigger);
+	pthread_mutex_unlock(&args->fork[philo->num - 1]);
+	pthread_mutex_unlock(&args->fork[philo->num % philo->args->n_philo]);
+	//free(philo);
 	return (NULL);
 }

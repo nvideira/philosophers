@@ -57,7 +57,7 @@ void		ft_error(char *str);
 t_philo		philo_create(int num, t_args *args);
 void		init_mutex(t_args *args);
 void		destroy_mutex(t_args *args);
-void		grab_forks(t_philo *philo, int left, int right);
+int			grab_forks(t_philo *philo, int left, int right);
 void		drop_forks(t_philo *philo, int left, int right);
 int			check_death(t_philo *philo);
 long long	time_elapsed(t_philo *philo);
