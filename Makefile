@@ -6,7 +6,7 @@
 #    By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/28 21:10:24 by nvideira          #+#    #+#              #
-#    Updated: 2022/09/10 23:35:46 by nvideira         ###   ########.fr        #
+#    Updated: 2022/09/28 17:36:07 by nvideira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ NAME=	philo
 
 CC=		gcc
 
-FLAGS=	-Wall -Werror -Wextra -pthread -g -fsanitize=thread
+FLAGS=	-Wall -Werror -Wextra -pthread
 
 .c.o:
 		${CC} ${FLAGS} -c $< -o ${<:.c=.o}

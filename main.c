@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:30:57 by nvideira          #+#    #+#             */
-/*   Updated: 2022/09/20 17:56:43 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/09/28 18:21:14 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	get_args(t_args *args, char **av)
 		args->limit = ft_atoi(av[5]);
 	else
 		args->limit = -1;
+	args->dead = 0;
 	if (args->n_philo < 1 || args->time_die < 1 || args->time_eat < 1
 		|| args->time_sleep < 1)
 		return (0);
@@ -86,11 +87,15 @@ int	main(int ac, char **av)
 		philo[i] = philo_create(i + 1, &args);
 	i = -1;
 	while (++i < args.n_philo)
+	{
 		if (pthread_create(&philo[i].t_id, NULL, &routine, (void *)(&philo[i])))
 			ft_error("An error has ocurred when creating threads");
+	}
+
 	i = 0;
-	while (pthread_join(philo[i].t_id, NULL))
-		i++;
+	 while (pthread_join(philo[i].t_id, NULL))
+	 	i++;
+
 	destroy_mutex(&args);
 	free(philo);
 	free(args.fork);

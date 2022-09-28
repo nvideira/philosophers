@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:02:11 by nvideira          #+#    #+#             */
-/*   Updated: 2022/09/27 18:07:20 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/09/28 18:16:31 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_args{
     int time_eat;
     int time_sleep;
 	int limit;
+	int	dead;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	death_trigger;
 }   t_args;
@@ -41,7 +42,6 @@ typedef struct s_philo{
 	int				num;
 	struct timeval	date;
 	t_args			*args;
-	int				dead;
 	int				n_meals;
 	long long		last_meal;
 	long long		start_time;
@@ -57,9 +57,9 @@ void		ft_error(char *str);
 t_philo		philo_create(int num, t_args *args);
 void		init_mutex(t_args *args);
 void		destroy_mutex(t_args *args);
-int			grab_forks(t_philo *philo, int left, int right);
+int			grab_forks(t_philo *philo, int left, int right, t_args *args);
 void		drop_forks(t_philo *philo, int left, int right);
-int			check_death(t_philo *philo);
+int			check_death(t_philo *philo, t_args *args);
 long long	time_elapsed(t_philo *philo);
 
 #endif

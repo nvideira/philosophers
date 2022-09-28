@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 23:15:44 by nvideira          #+#    #+#             */
-/*   Updated: 2022/09/27 18:25:27 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/09/28 18:22:37 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,16 @@ long long	time_elapsed(t_philo *philo)
 	return (diff);
 }
 
-int	check_death(t_philo *philo)
+int	check_death(t_philo *philo, t_args *args)
 {
 	pthread_mutex_lock(&philo->args->death_trigger);
-	
+	if (args->dead == 1)
+		return (1);
 	if (time_elapsed(philo) - philo->last_meal > philo->args->time_die)
 	{
 		printf("%lld: %d died\n", time_elapsed(philo), philo->num);
 		philo->state = DEAD;
+		args->dead = 1;
 		return (1);
 	}
 	pthread_mutex_unlock(&philo->args->death_trigger);
@@ -45,7 +47,6 @@ t_philo philo_create(int num, t_args *args)
 
 	philo.num = num;
 	philo.state = THINKING;
-	philo.dead = 0;
 	philo.args = args;
 	gettimeofday(&time, NULL);
 	philo.start_time = (time.tv_sec * 1000);
@@ -66,7 +67,7 @@ void	*routine(void *arg)
 	{
 		if (philo->state == EATING)
 		{
-			if (check_death(philo))
+			if (check_death(philo, args))
 				break ;
 			philo->state = SLEEPING;
 			printf("%lld: %d is sleeping.\n", time_elapsed(philo), philo->num);
@@ -74,16 +75,16 @@ void	*routine(void *arg)
 		}
 		else if (philo->state == SLEEPING)
 		{
-			if (check_death(philo))
+			if (check_death(philo, args))
 				break ;
 			philo->state = THINKING;
 			printf("%lld: %d is thinking.\n", time_elapsed(philo), philo->num);
 		}
 		else if (philo->state == THINKING)
 		{
-			if (check_death(philo))
+			if (check_death(philo, args))
 				break ;
-			if (grab_forks(philo, philo->num - 1, philo->num % philo->args->n_philo))
+			if (grab_forks(philo, philo->num - 1, philo->num % philo->args->n_philo, args))
 				break ;
 			philo->state = EATING;
 			printf("%lld: %d is eating.\n", time_elapsed(philo), philo->num);

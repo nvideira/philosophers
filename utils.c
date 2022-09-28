@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 18:43:41 by nvideira          #+#    #+#             */
-/*   Updated: 2022/08/31 18:48:06 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/09/28 18:17:17 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,34 +41,34 @@ void	destroy_mutex(t_args *args)
 	while (i < args->n_philo)
 	{
 		if (pthread_mutex_destroy(&(args->fork[i])))
-			ft_error("ForkMutex destroy failed.");
+			printf("ForkMutex destroy failed.\n");
 		else
 			printf("ForkMutex destroyed successfully\n");
 		i++;
 	}
 	if (pthread_mutex_destroy(&(args->death_trigger)))
-		ft_error("DeathMutex destroy failed.");
+		printf("DeathMutex destroy failed.\n");
 	else
 		printf("DeathMutex destroyed successfully\n");
 }
 
-int	grab_forks(t_philo *philo, int left, int right)
+int	grab_forks(t_philo *philo, int left, int right, t_args *args)
 {
-	if (philo->num % 2 == 1 && !philo->dead)
+	if (philo->num % 2 == 1 && !args->dead)
 	{
 		pthread_mutex_lock(&philo->args->fork[left]);
 		printf("%lld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
 		pthread_mutex_lock(&philo->args->fork[right]);
 		printf("%lld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
 	}
-	else if (!philo->dead)
+	else if (!args->dead)
 	{
 		pthread_mutex_lock(&philo->args->fork[right]);
 		printf("%lld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
 		pthread_mutex_lock(&philo->args->fork[left]);
 		printf("%lld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
 	}
-	if (check_death(philo))
+	if (check_death(philo, args))
 	{
 		pthread_mutex_unlock(&philo->args->fork[left]);
 		pthread_mutex_unlock(&philo->args->fork[right]);
