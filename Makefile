@@ -14,7 +14,6 @@ SRCS=	main.c\
 		ft_atoi.c\
 		philo.c\
 		utils.c\
-		ft_itoa.c\
 		ft_strdup.c\
 		ft_strlen.c\
 		ft_strncmp.c\

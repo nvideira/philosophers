@@ -49,7 +49,6 @@ typedef struct s_philo{
 }   t_philo;
 
 long long	ft_atoi(const char *str);
-char		*ft_itoa(int n);
 size_t		ft_strlen(const char *str);
 char		*ft_strdup(const char *s1);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
