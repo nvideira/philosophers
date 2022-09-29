@@ -32,18 +32,6 @@ int	only_digits(char **av)
 	return (1);
 }
 
-int	is_int(t_args args, char **av)
-{
-	if (ft_strncmp(ft_itoa(args.n_philo), av[1], ft_strlen(av[1]))
-		|| ft_strncmp(ft_itoa(args.time_die), av[2], ft_strlen(av[2]))
-		|| ft_strncmp(ft_itoa(args.time_eat), av[3], ft_strlen(av[3]))
-		|| ft_strncmp(ft_itoa(args.time_sleep), av[4], ft_strlen(av[4])))
-	{
-		return (0);
-	}	
-	return (1);
-}
-
 int	get_args(t_args *args, char **av)
 {
 	if (!only_digits(av))
@@ -59,8 +47,6 @@ int	get_args(t_args *args, char **av)
 	args->dead = 0;
 	if (args->n_philo < 1 || args->time_die < 1 || args->time_eat < 1
 		|| args->time_sleep < 1)
-		return (0);
-	if (!is_int(*args, av))
 		return (0);
 	return (1);
 }
@@ -87,15 +73,11 @@ int	main(int ac, char **av)
 		philo[i] = philo_create(i + 1, &args);
 	i = -1;
 	while (++i < args.n_philo)
-	{
 		if (pthread_create(&philo[i].t_id, NULL, &routine, (void *)(&philo[i])))
 			ft_error("An error has ocurred when creating threads");
-	}
-
 	i = 0;
 	 while (pthread_join(philo[i].t_id, NULL))
 	 	i++;
-
 	destroy_mutex(&args);
 	free(philo);
 	free(args.fork);

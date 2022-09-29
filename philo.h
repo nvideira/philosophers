@@ -23,7 +23,8 @@
 # define SLEEPING 2
 # define THINKING 3
 # define DEAD 4
-
+# define FORKING 5
+# define UNFORKING 6
 
 typedef struct s_args{
     int n_philo;
@@ -47,7 +48,7 @@ typedef struct s_philo{
 	long long		start_time;
 }   t_philo;
 
-int			ft_atoi(const char *str);
+long long	ft_atoi(const char *str);
 char		*ft_itoa(int n);
 size_t		ft_strlen(const char *str);
 char		*ft_strdup(const char *s1);
@@ -57,9 +58,11 @@ void		ft_error(char *str);
 t_philo		philo_create(int num, t_args *args);
 void		init_mutex(t_args *args);
 void		destroy_mutex(t_args *args);
-int			grab_forks(t_philo *philo, int left, int right, t_args *args);
+int			grab_forks(t_philo *philo, int left, int right);
 void		drop_forks(t_philo *philo, int left, int right);
-int			check_death(t_philo *philo, t_args *args);
+int			check_death(t_philo *philo);
 long long	time_elapsed(t_philo *philo);
+void		before_print(t_philo *philo, int status, t_args *args);
+void		print_status(t_philo *philo, int status, t_args *args);
 
 #endif

@@ -24,16 +24,16 @@ long long	time_elapsed(t_philo *philo)
 	return (diff);
 }
 
-int	check_death(t_philo *philo, t_args *args)
+int	check_death(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->args->death_trigger);
-	if (args->dead == 1)
+	if (philo->args->dead == 1)
 		return (1);
 	if (time_elapsed(philo) - philo->last_meal > philo->args->time_die)
 	{
-		printf("%lld: %d died\n", time_elapsed(philo), philo->num);
 		philo->state = DEAD;
-		args->dead = 1;
+		print_status(philo, DEAD, philo->args);
+		philo->args->dead = 1;
 		return (1);
 	}
 	pthread_mutex_unlock(&philo->args->death_trigger);
@@ -67,27 +67,27 @@ void	*routine(void *arg)
 	{
 		if (philo->state == EATING)
 		{
-			if (check_death(philo, args))
+			if (check_death(philo))
 				break ;
 			philo->state = SLEEPING;
-			printf("%lld: %d is sleeping.\n", time_elapsed(philo), philo->num);
+			before_print(philo, SLEEPING, philo->args);
 			usleep(philo->args->time_sleep * 1000);
 		}
 		else if (philo->state == SLEEPING)
 		{
-			if (check_death(philo, args))
+			if (check_death(philo))
 				break ;
 			philo->state = THINKING;
-			printf("%lld: %d is thinking.\n", time_elapsed(philo), philo->num);
+			before_print(philo, THINKING, philo->args);
 		}
 		else if (philo->state == THINKING)
 		{
-			if (check_death(philo, args))
+			if (check_death(philo))
 				break ;
-			if (grab_forks(philo, philo->num - 1, philo->num % philo->args->n_philo, args))
+			if (grab_forks(philo, philo->num - 1, philo->num % philo->args->n_philo))
 				break ;
 			philo->state = EATING;
-			printf("%lld: %d is eating.\n", time_elapsed(philo), philo->num);
+			before_print(philo, EATING, philo->args);
 			usleep(philo->args->time_eat * 1000);
 			philo->last_meal = time_elapsed(philo);
 			philo->n_meals--;
@@ -96,6 +96,7 @@ void	*routine(void *arg)
 		else
 			break ;
 	}
+	printf("dead: %d\n", philo->args->dead);
 	pthread_mutex_unlock(&philo->args->death_trigger);
 	pthread_mutex_unlock(&args->fork[philo->num - 1]);
 	pthread_mutex_unlock(&args->fork[philo->num % philo->args->n_philo]);

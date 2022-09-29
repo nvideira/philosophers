@@ -12,29 +12,30 @@
 
 #include "philo.h"
 
-void    print_status(t_philo *philo, int status)
+void    before_print(t_philo *philo, int status, t_args *args)
 {
-    if (status == EATING)
-    {
-        
+    pthread_mutex_lock(&args->death_trigger);
+    print_status(philo, status, args);
+    pthread_mutex_unlock(&args->death_trigger);
+}
+
+void    print_status(t_philo *philo, int status, t_args *args)
+{
+    if (args->dead)
+        return ;
+    if (status == EATING) 
         printf("%lld: %d is eating.\n", time_elapsed(philo), philo->num);
-		usleep(philo->args->time_eat * 1000);
-		philo->last_meal = time_elapsed(philo);
-    }
     else if (status == SLEEPING)
-    {
         printf("%lld: %d is sleeping.\n", time_elapsed(philo), philo->num);
-        usleep(philo->args->time_sleep * 1000);
-    }
     else if (status == THINKING)
+        printf("%lld: %d is thinking.\n", time_elapsed(philo), philo->num);
+    else if (status == FORKING)
     {
-        printf("%lld: %d is sleeping.\n", time_elapsed(philo), philo->num);
-		usleep(philo->args->time_sleep * 1000);
+        printf("%lld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
+        printf("%lld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
     }
-    else
-    {
-        pthread_mutex_lock(&philo->args->death_trigger);
-		printf("%lld: %d died\n", time_elapsed(philo), philo->num);
-		pthread_mutex_unlock(&philo->args->death_trigger);
-    }
+    else if (status == DEAD)
+        printf("%lld: %d died.\n", time_elapsed(philo), philo->num);
+    else if (status == UNFORKING)
+        printf("%lld: %d has dropped a fork.\n", time_elapsed(philo), philo->num);
 }

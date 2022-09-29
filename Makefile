@@ -17,7 +17,8 @@ SRCS=	main.c\
 		ft_itoa.c\
 		ft_strdup.c\
 		ft_strlen.c\
-		ft_strncmp.c
+		ft_strncmp.c\
+		print.c
 
 OBJS=	${SRCS:.c=.o}
 
