@@ -25,7 +25,7 @@ NAME=	philo
 
 CC=		gcc
 
-FLAGS=	-Wall -Werror -Wextra -pthread
+FLAGS=	-Wall -Werror -Wextra -pthread 
 
 .c.o:
 		${CC} ${FLAGS} -c $< -o ${<:.c=.o}
