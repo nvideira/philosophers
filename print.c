@@ -34,8 +34,11 @@ void    print_status(t_philo *philo, int status, t_args *args)
         printf("%lld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
         printf("%lld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
     }
-    else if (status == DEAD)
-        printf("%lld: %d died.\n", time_elapsed(philo), philo->num);
+    // else if (status == DEAD)
+    //     printf("%lld: %d died.\n", time_elapsed(philo), philo->num);
     else if (status == UNFORKING)
+    {
         printf("%lld: %d has dropped a fork.\n", time_elapsed(philo), philo->num);
+        printf("%lld: %d has dropped a fork.\n", time_elapsed(philo), philo->num);
+    }
 }

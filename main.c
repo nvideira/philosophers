@@ -78,6 +78,7 @@ int	main(int ac, char **av)
 	i = 0;
 	 while (pthread_join(philo[i].t_id, NULL))
 	 	i++;
+	//usleep(10000);
 	destroy_mutex(&args);
 	free(philo);
 	free(args.fork);

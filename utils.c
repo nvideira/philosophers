@@ -29,7 +29,8 @@ void	init_mutex(t_args *args)
 			ft_error("Mutex init failed.");
 		i++;
 	}
-	if (pthread_mutex_init(&(args->death_trigger), NULL))
+	if (pthread_mutex_init(&(args->death_trigger), NULL)
+		|| pthread_mutex_init(&(args->chomp), NULL))
 		ft_error("Mutex init failed.");
 }
 
@@ -46,7 +47,8 @@ void	destroy_mutex(t_args *args)
 			printf("ForkMutex destroyed successfully\n");
 		i++;
 	}
-	if (pthread_mutex_destroy(&(args->death_trigger)))
+	if (pthread_mutex_destroy(&(args->death_trigger))
+		|| pthread_mutex_destroy(&(args->chomp)))
 		printf("DeathMutex destroy failed.\n");
 	else
 		printf("DeathMutex destroyed successfully\n");
@@ -54,30 +56,46 @@ void	destroy_mutex(t_args *args)
 
 int	grab_forks(t_philo *philo, int left, int right)
 {
-	if (philo->num % 2 == 1 && !philo->args->dead)
+	int	swap;
+
+	if (right < left)
 	{
+		swap = left;
+		left = right;
+		right = swap;
+	}
+	// if (philo->num % 2 == 1 && !philo->args->dead)
+	// {
 		pthread_mutex_lock(&philo->args->fork[left]);
 		pthread_mutex_lock(&philo->args->fork[right]);
-	}
-	else if (!philo->args->dead)
-	{
-		pthread_mutex_lock(&philo->args->fork[right]);
-		pthread_mutex_lock(&philo->args->fork[left]);
-	}
-	if (check_death(philo) || philo->args->dead)
-	{
-		pthread_mutex_unlock(&philo->args->fork[left]);
-		pthread_mutex_unlock(&philo->args->fork[right]);
-		return (1);
-	}
-	before_print(philo, FORKING, philo->args);
+	// }
+	// else if (!philo->args->dead)
+	// {
+	// 	pthread_mutex_lock(&philo->args->fork[right]);
+	// 	pthread_mutex_lock(&philo->args->fork[left]);
+	// }
+	// if (check_death(philo) || philo->args->dead)
+	// {
+	// 	pthread_mutex_unlock(&philo->args->fork[left]);
+	// 	pthread_mutex_unlock(&philo->args->fork[right]);
+	// 	return (1);
+	// }
+	print_status(philo, FORKING, philo->args);
 	return (0);
 }
 
-void	drop_forks(t_philo *philo, int left, int right)
+void	drop_forks(t_philo *philo, int left, int right, int flag)
 {
-		pthread_mutex_unlock(&philo->args->fork[left]);
-		print_status(philo, UNFORKING, philo->args);
-		pthread_mutex_unlock(&philo->args->fork[right]);
+	int	swap;
+
+	if (right < left)
+	{
+		swap = left;
+		left = right;
+		right = swap;
+	}
+	pthread_mutex_unlock(&philo->args->fork[left]);
+	pthread_mutex_unlock(&philo->args->fork[right]);
+	if (!flag)
 		print_status(philo, UNFORKING, philo->args);
 }

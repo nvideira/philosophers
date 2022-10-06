@@ -34,6 +34,7 @@ typedef struct s_args{
 	int limit;
 	int	dead;
 	pthread_mutex_t	*fork;
+	pthread_mutex_t	chomp;
 	pthread_mutex_t	death_trigger;
 }   t_args;
 
@@ -58,7 +59,7 @@ t_philo		philo_create(int num, t_args *args);
 void		init_mutex(t_args *args);
 void		destroy_mutex(t_args *args);
 int			grab_forks(t_philo *philo, int left, int right);
-void		drop_forks(t_philo *philo, int left, int right);
+void		drop_forks(t_philo *philo, int left, int right, int flag);
 int			check_death(t_philo *philo);
 long long	time_elapsed(t_philo *philo);
 void		before_print(t_philo *philo, int status, t_args *args);
