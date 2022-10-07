@@ -63,6 +63,6 @@ void		drop_forks(t_philo *philo, int left, int right, int flag);
 int			check_death(t_philo *philo);
 long long	time_elapsed(t_philo *philo);
 void		before_print(t_philo *philo, int status, t_args *args);
-void		print_status(t_philo *philo, int status, t_args *args);
+void		print_status(t_philo *philo, int status);
 
 #endif

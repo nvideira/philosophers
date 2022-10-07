@@ -12,16 +12,16 @@
 
 #include "philo.h"
 
-void    before_print(t_philo *philo, int status, t_args *args)
-{
-    pthread_mutex_lock(&args->death_trigger);
-    print_status(philo, status, args);
-    pthread_mutex_unlock(&args->death_trigger);
-}
+// void    before_print(t_philo *philo, int status, t_args *args)
+// {
+//     pthread_mutex_lock(&args->death_trigger);
+//     print_status(philo, status, args);
+//     pthread_mutex_unlock(&args->death_trigger);
+// }
 
-void    print_status(t_philo *philo, int status, t_args *args)
+void    print_status(t_philo *philo, int status)
 {
-    if (args->dead)
+    if (check_death(philo))
         return ;
     if (status == EATING) 
         printf("%lld: %d is eating.\n", time_elapsed(philo), philo->num);
@@ -34,8 +34,6 @@ void    print_status(t_philo *philo, int status, t_args *args)
         printf("%lld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
         printf("%lld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
     }
-    // else if (status == DEAD)
-    //     printf("%lld: %d died.\n", time_elapsed(philo), philo->num);
     else if (status == UNFORKING)
     {
         printf("%lld: %d has dropped a fork.\n", time_elapsed(philo), philo->num);

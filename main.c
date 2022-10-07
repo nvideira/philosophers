@@ -63,11 +63,11 @@ int	main(int ac, char **av)
 	if (!get_args(&args, av))
 		ft_error("Bad input");
 	if (args.n_philo == 1)
-		return (printf("%s: The philosopher desperately looks for a second fork. His hunger grows at an unforgiving pace. If only his mother had taught him how to eat using only 1 fork, or even his bare hands. That wench! He died regretting every decision he ever made.\n", av[2]));
+		return (printf("%d: 1 died\n", args.time_die));
 	philo = (t_philo *)malloc(args.n_philo * sizeof(t_philo));
 	if (!philo)
 		ft_error("malloc error\n");
-	args.fork = (pthread_mutex_t *)malloc(args.n_philo * sizeof(pthread_mutex_t));
+	args.fork = malloc(args.n_philo * sizeof(pthread_mutex_t));
 	init_mutex(&args);
 	while (++i < args.n_philo)
 		philo[i] = philo_create(i + 1, &args);
@@ -76,9 +76,11 @@ int	main(int ac, char **av)
 		if (pthread_create(&philo[i].t_id, NULL, &routine, (void *)(&philo[i])))
 			ft_error("An error has ocurred when creating threads");
 	i = 0;
-	 while (pthread_join(philo[i].t_id, NULL))
-	 	i++;
-	//usleep(10000);
+	while (i < args.n_philo)
+	{
+		pthread_join(philo[i].t_id, NULL);
+		i++;
+	}
 	destroy_mutex(&args);
 	free(philo);
 	free(args.fork);

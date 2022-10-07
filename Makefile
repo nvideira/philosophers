@@ -16,7 +16,6 @@ SRCS=	main.c\
 		utils.c\
 		ft_strdup.c\
 		ft_strlen.c\
-		ft_strncmp.c\
 		print.c
 
 OBJS=	${SRCS:.c=.o}
@@ -25,7 +24,7 @@ NAME=	philo
 
 CC=		gcc
 
-FLAGS=	-Wall -Werror -Wextra -pthread 
+FLAGS=	-Wall -Werror -Wextra -pthread -g -fsanitize=thread
 
 .c.o:
 		${CC} ${FLAGS} -c $< -o ${<:.c=.o}

@@ -26,17 +26,21 @@ long long	time_elapsed(t_philo *philo)
 
 int	check_death(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->args->death_trigger);
 	if (philo->args->dead == 1)
+	{
+		pthread_mutex_unlock(&philo->args->death_trigger);
 		return (1);
+	}
 	if (time_elapsed(philo) - philo->last_meal > philo->args->time_die)
 	{
-		pthread_mutex_lock(&philo->args->death_trigger);
 		philo->state = DEAD;
 		printf("%lld: %d died.\n", time_elapsed(philo), philo->num);
 		philo->args->dead = 1;
 		pthread_mutex_unlock(&philo->args->death_trigger);
 		return (1);
 	}
+	pthread_mutex_unlock(&philo->args->death_trigger);
 	return (0);
 }
 
@@ -59,10 +63,8 @@ t_philo philo_create(int num, t_args *args)
 void	*routine(void *arg)
 {
 	t_philo		*philo;
-	//t_args		*args;
 
 	philo = (t_philo *)arg;
-	//args = philo->args;
 	while (philo->n_meals)
 	{
 		if (philo->state == EATING)
@@ -70,7 +72,7 @@ void	*routine(void *arg)
 			if (check_death(philo))
 				break ;
 			philo->state = SLEEPING;
-			print_status(philo, SLEEPING, philo->args);
+			print_status(philo, SLEEPING);
 			usleep(philo->args->time_sleep * 1000);
 		}
 		else if (philo->state == SLEEPING)
@@ -78,7 +80,7 @@ void	*routine(void *arg)
 			if (check_death(philo))
 				break ;
 			philo->state = THINKING;
-			print_status(philo, THINKING, philo->args);
+			print_status(philo, THINKING);
 		}
 		else if (philo->state == THINKING)
 		{
@@ -93,7 +95,7 @@ void	*routine(void *arg)
 				pthread_mutex_unlock(&philo->args->chomp);
 				break ;
 			}
-			print_status(philo, EATING, philo->args);
+			print_status(philo, EATING);
 			usleep(philo->args->time_eat * 1000);
 			philo->last_meal = time_elapsed(philo);
 			philo->n_meals--;
@@ -103,10 +105,5 @@ void	*routine(void *arg)
 		else
 			break ;
 	}
-	printf("dead: %d\n", philo->args->dead);
-	//pthread_mutex_unlock(&philo->args->death_trigger);
-	// pthread_mutex_unlock(&args->fork[philo->num - 1]);
-	// pthread_mutex_unlock(&args->fork[philo->num % philo->args->n_philo]);
-	//free(philo);
 	return (NULL);
 }

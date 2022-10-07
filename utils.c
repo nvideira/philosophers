@@ -42,16 +42,12 @@ void	destroy_mutex(t_args *args)
 	while (i < args->n_philo)
 	{
 		if (pthread_mutex_destroy(&(args->fork[i])))
-			printf("ForkMutex destroy failed.\n");
-		else
-			printf("ForkMutex destroyed successfully\n");
+			printf("Fork Mutex destroy failed.\n");
 		i++;
 	}
 	if (pthread_mutex_destroy(&(args->death_trigger))
 		|| pthread_mutex_destroy(&(args->chomp)))
-		printf("DeathMutex destroy failed.\n");
-	else
-		printf("DeathMutex destroyed successfully\n");
+		printf("Death & Chomp Mutex destroy failed.\n");
 }
 
 int	grab_forks(t_philo *philo, int left, int right)
@@ -64,23 +60,9 @@ int	grab_forks(t_philo *philo, int left, int right)
 		left = right;
 		right = swap;
 	}
-	// if (philo->num % 2 == 1 && !philo->args->dead)
-	// {
-		pthread_mutex_lock(&philo->args->fork[left]);
-		pthread_mutex_lock(&philo->args->fork[right]);
-	// }
-	// else if (!philo->args->dead)
-	// {
-	// 	pthread_mutex_lock(&philo->args->fork[right]);
-	// 	pthread_mutex_lock(&philo->args->fork[left]);
-	// }
-	// if (check_death(philo) || philo->args->dead)
-	// {
-	// 	pthread_mutex_unlock(&philo->args->fork[left]);
-	// 	pthread_mutex_unlock(&philo->args->fork[right]);
-	// 	return (1);
-	// }
-	print_status(philo, FORKING, philo->args);
+	pthread_mutex_lock(&philo->args->fork[left]);
+	pthread_mutex_lock(&philo->args->fork[right]);
+	print_status(philo, FORKING);
 	return (0);
 }
 
@@ -97,5 +79,5 @@ void	drop_forks(t_philo *philo, int left, int right, int flag)
 	pthread_mutex_unlock(&philo->args->fork[left]);
 	pthread_mutex_unlock(&philo->args->fork[right]);
 	if (!flag)
-		print_status(philo, UNFORKING, philo->args);
+		print_status(philo, UNFORKING);
 }
