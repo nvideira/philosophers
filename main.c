@@ -32,6 +32,19 @@ int	only_digits(char **av)
 	return (1);
 }
 
+void	setup(t_philo *philo, t_args *args)
+{
+	int	i;
+
+	i = -1;
+	if (!philo)
+		ft_error("malloc error\n");
+	args->fork = malloc(args->n_philo * sizeof(pthread_mutex_t));
+	init_mutex(args);
+	while (++i < args->n_philo)
+		philo[i] = philo_create(i + 1, args);
+}
+
 int	get_args(t_args *args, char **av)
 {
 	if (!only_digits(av))
@@ -65,22 +78,14 @@ int	main(int ac, char **av)
 	if (args.n_philo == 1)
 		return (printf("%d: 1 died\n", args.time_die));
 	philo = (t_philo *)malloc(args.n_philo * sizeof(t_philo));
-	if (!philo)
-		ft_error("malloc error\n");
-	args.fork = malloc(args.n_philo * sizeof(pthread_mutex_t));
-	init_mutex(&args);
-	while (++i < args.n_philo)
-		philo[i] = philo_create(i + 1, &args);
+	setup(philo, &args);
 	i = -1;
 	while (++i < args.n_philo)
 		if (pthread_create(&philo[i].t_id, NULL, &routine, (void *)(&philo[i])))
 			ft_error("An error has ocurred when creating threads");
-	i = 0;
-	while (i < args.n_philo)
-	{
+	i = -1;
+	while (++i < args.n_philo)
 		pthread_join(philo[i].t_id, NULL);
-		i++;
-	}
 	destroy_mutex(&args);
 	free(philo);
 	free(args.fork);

@@ -44,9 +44,9 @@ int	check_death(t_philo *philo)
 	return (0);
 }
 
-t_philo philo_create(int num, t_args *args)
+t_philo	philo_create(int num, t_args *args)
 {
-	t_philo 		philo;
+	t_philo			philo;
 	struct timeval	time;
 
 	philo.num = num;
@@ -87,11 +87,13 @@ void	*routine(void *arg)
 			philo->state = EATING;
 			if (check_death(philo))
 				break ;
-			grab_forks(philo, philo->num - 1, philo->num % philo->args->n_philo);
+			grab_forks(philo, philo->num - 1,
+				philo->num % philo->args->n_philo);
 			pthread_mutex_lock(&philo->args->chomp);
 			if (check_death(philo))
 			{
-				drop_forks(philo, philo->num - 1, philo->num % philo->args->n_philo, 1);
+				drop_forks(philo, philo->num - 1,
+					philo->num % philo->args->n_philo, 1);
 				pthread_mutex_unlock(&philo->args->chomp);
 				break ;
 			}
@@ -100,7 +102,8 @@ void	*routine(void *arg)
 			philo->last_meal = time_elapsed(philo);
 			philo->n_meals--;
 			pthread_mutex_unlock(&philo->args->chomp);
-			drop_forks(philo, philo->num - 1, philo->num % philo->args->n_philo, 0);
+			drop_forks(philo, philo->num - 1,
+				philo->num % philo->args->n_philo, 0);
 		}
 		else
 			break ;
