@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:02:11 by nvideira          #+#    #+#             */
-/*   Updated: 2022/09/28 18:16:31 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/10/08 20:28:18 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,19 @@
 # define UNFORKING 6
 
 typedef struct s_args{
-    int n_philo;
-    int time_die;
-    int time_eat;
-    int time_sleep;
-	int limit;
-	int	dead;
+	int				n_philo;
+	int				time_die;
+	int				time_eat;
+	int				time_sleep;
+	int				limit;
+	int				dead;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	chomp;
 	pthread_mutex_t	death_trigger;
-}   t_args;
+}	t_args;
 
 typedef struct s_philo{
-    pthread_t		t_id;
+	pthread_t		t_id;
 	int				state;
 	int				num;
 	struct timeval	date;
@@ -47,16 +47,15 @@ typedef struct s_philo{
 	int				n_meals;
 	long long		last_meal;
 	long long		start_time;
-}   t_philo;
+}	t_philo;
 
 long long	ft_atoi(const char *str);
 size_t		ft_strlen(const char *str);
 char		*ft_strdup(const char *s1);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 void		*routine(void *arg);
-void		ft_error(char *str);
 t_philo		philo_create(int num, t_args *args);
-void		init_mutex(t_args *args);
+int			init_mutex(t_args *args);
 void		destroy_mutex(t_args *args);
 int			grab_forks(t_philo *philo, int left, int right);
 void		drop_forks(t_philo *philo, int left, int right, int flag);

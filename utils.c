@@ -6,19 +6,13 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 18:43:41 by nvideira          #+#    #+#             */
-/*   Updated: 2022/09/28 18:17:17 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/10/08 20:08:34 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_error(char *str)
-{
-	printf("Error: %s\n", str);
-	exit(1);
-}
-
-void	init_mutex(t_args *args)
+int	init_mutex(t_args *args)
 {
 	int	i;
 
@@ -26,12 +20,13 @@ void	init_mutex(t_args *args)
 	while (i < args->n_philo)
 	{
 		if (pthread_mutex_init(&(args->fork[i]), NULL))
-			ft_error("Mutex init failed.");
+			return (0);
 		i++;
 	}
 	if (pthread_mutex_init(&(args->death_trigger), NULL)
 		|| pthread_mutex_init(&(args->chomp), NULL))
-		ft_error("Mutex init failed.");
+		return (0);
+	return (1);
 }
 
 void	destroy_mutex(t_args *args)

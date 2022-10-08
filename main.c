@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:30:57 by nvideira          #+#    #+#             */
-/*   Updated: 2022/09/28 18:21:14 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/10/08 20:10:14 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,19 @@ int	only_digits(char **av)
 	return (1);
 }
 
-void	setup(t_philo *philo, t_args *args)
+int	setup(t_philo *philo, t_args *args)
 {
 	int	i;
 
 	i = -1;
 	if (!philo)
-		ft_error("malloc error\n");
+		return (0);
 	args->fork = malloc(args->n_philo * sizeof(pthread_mutex_t));
-	init_mutex(args);
+	if (!init_mutex(args))
+		return (0);
 	while (++i < args->n_philo)
 		philo[i] = philo_create(i + 1, args);
+	return (1);
 }
 
 int	get_args(t_args *args, char **av)
@@ -74,15 +76,16 @@ int	main(int ac, char **av)
 	if (ac < 5 || ac > 6)
 		return (printf("Wrong number of arguments.\n"));
 	if (!get_args(&args, av))
-		ft_error("Bad input");
+		return (printf("Bad input"));
 	if (args.n_philo == 1)
 		return (printf("%d: 1 died\n", args.time_die));
 	philo = (t_philo *)malloc(args.n_philo * sizeof(t_philo));
-	setup(philo, &args);
+	if (!setup(philo, &args))
+		return (printf("An error has occurred when starting the simulation\n"));
 	i = -1;
 	while (++i < args.n_philo)
 		if (pthread_create(&philo[i].t_id, NULL, &routine, (void *)(&philo[i])))
-			ft_error("An error has ocurred when creating threads");
+			return (printf("An error has ocurred when creating threads"));
 	i = -1;
 	while (++i < args.n_philo)
 		pthread_join(philo[i].t_id, NULL);
