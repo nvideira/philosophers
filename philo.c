@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 23:15:44 by nvideira          #+#    #+#             */
-/*   Updated: 2022/10/08 20:18:12 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/10/10 10:09:58 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,41 +69,18 @@ void	*routine(void *arg)
 	{
 		if (philo->state == EATING)
 		{
-			if (check_death(philo))
+			if (snoring(philo))
 				break ;
-			philo->state = SLEEPING;
-			print_status(philo, SLEEPING);
-			usleep(philo->args->time_sleep * 1000);
 		}
 		else if (philo->state == SLEEPING)
 		{
-			if (check_death(philo))
+			if (brainstorming(philo))
 				break ;
-			philo->state = THINKING;
-			print_status(philo, THINKING);
 		}
 		else if (philo->state == THINKING)
 		{
-			philo->state = EATING;
-			if (check_death(philo))
+			if (eating(philo))
 				break ;
-			grab_forks(philo, philo->num - 1,
-				philo->num % philo->args->n_philo);
-			pthread_mutex_lock(&philo->args->chomp);
-			if (check_death(philo))
-			{
-				drop_forks(philo, philo->num - 1,
-					philo->num % philo->args->n_philo, 1);
-				pthread_mutex_unlock(&philo->args->chomp);
-				break ;
-			}
-			print_status(philo, EATING);
-			usleep(philo->args->time_eat * 1000);
-			philo->last_meal = time_elapsed(philo);
-			philo->n_meals--;
-			pthread_mutex_unlock(&philo->args->chomp);
-			drop_forks(philo, philo->num - 1,
-				philo->num % philo->args->n_philo, 0);
 		}
 		else
 			break ;

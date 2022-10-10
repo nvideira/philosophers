@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:02:11 by nvideira          #+#    #+#             */
-/*   Updated: 2022/10/08 20:28:18 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/10/10 10:11:31 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,7 @@ int			check_death(t_philo *philo);
 long long	time_elapsed(t_philo *philo);
 void		before_print(t_philo *philo, int status, t_args *args);
 void		print_status(t_philo *philo, int status);
-
+int			brainstorming(t_philo *philo);
+int			eating(t_philo *philo);
+int			snoring(t_philo *philo);
 #endif
