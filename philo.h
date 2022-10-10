@@ -6,10 +6,9 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:02:11 by nvideira          #+#    #+#             */
-/*   Updated: 2022/10/10 15:22:39 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/10/10 15:35:23 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef PHILO_H
 # define PHILO_H
@@ -52,8 +51,6 @@ typedef struct s_philo{
 
 long long	ft_atoi(const char *str);
 size_t		ft_strlen(const char *str);
-char		*ft_strdup(const char *s1);
-int			ft_strncmp(const char *s1, const char *s2, size_t n);
 void		*routine(void *arg);
 t_philo		philo_create(int num, t_args *args);
 int			init_mutex(t_args *args);
@@ -62,7 +59,6 @@ int			grab_forks(t_philo *philo, int left, int right);
 void		drop_forks(t_philo *philo, int left, int right, int flag);
 int			check_death(t_philo *philo);
 long long	time_elapsed(t_philo *philo);
-void		before_print(t_philo *philo, int status, t_args *args);
 void		print_status(t_philo *philo, int status);
 int			brainstorming(t_philo *philo);
 int			eating(t_philo *philo);

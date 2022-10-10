@@ -1,14 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   libft.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/24 21:52:47 by nvideira          #+#    #+#             */
-/*   Updated: 2022/08/28 23:55:38 by nvideira         ###   ########.fr       */
+/*   Created: 2022/10/10 15:26:13 by nvideira          #+#    #+#             */
+/*   Updated: 2022/10/10 15:28:49 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "philo.h"
+
+size_t	ft_strlen(const char *str)
+{
+	size_t	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i] != '\0')
+		i++;
+	return (i);
+}
 
 long long	ft_atoi(const char *str)
 {
