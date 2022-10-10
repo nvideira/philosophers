@@ -6,9 +6,10 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:02:11 by nvideira          #+#    #+#             */
-/*   Updated: 2022/10/10 10:11:31 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/10/10 15:22:39 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef PHILO_H
 # define PHILO_H
