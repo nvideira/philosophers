@@ -28,19 +28,16 @@ int	eating(t_philo *philo)
 		return (1);
 	grab_forks(philo, philo->num - 1,
 		philo->num % philo->args->n_philo);
-	//pthread_mutex_lock(&philo->args->chomp);
 	if (check_death(philo))
 	{
 		drop_forks(philo, philo->num - 1,
 			philo->num % philo->args->n_philo, 1);
-		//pthread_mutex_unlock(&philo->args->chomp);
 		return (1);
 	}
 	print_status(philo, EATING);
 	usleep(philo->args->time_eat * 1000);
 	philo->last_meal = time_elapsed(philo);
 	philo->n_meals--;
-	//pthread_mutex_unlock(&philo->args->chomp);
 	drop_forks(philo, philo->num - 1,
 		philo->num % philo->args->n_philo, 0);
 	return (0);

@@ -56,7 +56,7 @@ t_philo	philo_create(int num, t_args *args)
 	philo.start_time = (time.tv_sec * 1000);
 	philo.start_time += (time.tv_usec / 1000);
 	philo.n_meals = args->limit;
-	philo.last_meal = philo.start_time;
+	philo.last_meal = 0;
 	return (philo);
 }
 

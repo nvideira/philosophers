@@ -28,7 +28,7 @@
 
 typedef struct s_args{
 	int				n_philo;
-	int				time_die;
+	long long		time_die;
 	int				time_eat;
 	int				time_sleep;
 	int				limit;

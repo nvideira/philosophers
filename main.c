@@ -78,7 +78,7 @@ int	main(int ac, char **av)
 	if (!get_args(&args, av))
 		return (printf("Bad input"));
 	if (args.n_philo == 1)
-		return (printf("%d: 1 died\n", args.time_die));
+		return (printf("%lld: 1 died\n", args.time_die));
 	philo = (t_philo *)malloc(args.n_philo * sizeof(t_philo));
 	if (!setup(philo, &args))
 		return (printf("An error has occurred when starting the simulation\n"));

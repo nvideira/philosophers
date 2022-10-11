@@ -14,22 +14,27 @@
 
 void	print_status(t_philo *philo, int status)
 {
-	pthread_mutex_lock(&philo->args->death_trigger);
-	if (status == EATING && !philo->args->dead)
+	pthread_mutex_lock(&philo->args->chomp);
+	if (check_death(philo))
+	{
+		pthread_mutex_unlock(&philo->args->chomp);
+		return ;
+	}
+	if (status == EATING)
 		printf("%lld: %d is eating.\n", time_elapsed(philo), philo->num);
-	else if (status == SLEEPING && !philo->args->dead)
+	else if (status == SLEEPING)
 		printf("%lld: %d is sleeping.\n", time_elapsed(philo), philo->num);
-	else if (status == THINKING && !philo->args->dead)
+	else if (status == THINKING)
 		printf("%lld: %d is thinking.\n", time_elapsed(philo), philo->num);
-	else if (status == FORKING && !philo->args->dead)
+	else if (status == FORKING)
 	{
 		printf("%lld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
 		printf("%lld: %d has taken a fork.\n", time_elapsed(philo), philo->num);
 	}
-	else if (status == UNFORKING && !philo->args->dead)
+	else if (status == UNFORKING)
 	{
 		printf("%lld: %d dropped a fork.\n", time_elapsed(philo), philo->num);
 		printf("%lld: %d dropped a fork.\n", time_elapsed(philo), philo->num);
 	}
-	pthread_mutex_unlock(&philo->args->death_trigger);
+	pthread_mutex_unlock(&philo->args->chomp);
 }
