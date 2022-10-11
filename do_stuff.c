@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 10:09:14 by nvideira          #+#    #+#             */
-/*   Updated: 2022/10/11 11:46:05 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/10/11 12:04:04 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,19 @@ int	eating(t_philo *philo)
 		return (1);
 	grab_forks(philo, philo->num - 1,
 		philo->num % philo->args->n_philo);
-	pthread_mutex_lock(&philo->args->chomp);
+	//pthread_mutex_lock(&philo->args->chomp);
 	if (check_death(philo))
 	{
 		drop_forks(philo, philo->num - 1,
 			philo->num % philo->args->n_philo, 1);
-		pthread_mutex_unlock(&philo->args->chomp);
+		//pthread_mutex_unlock(&philo->args->chomp);
 		return (1);
 	}
 	print_status(philo, EATING);
-	philo->last_meal = time_elapsed(philo);
 	usleep(philo->args->time_eat * 1000);
+	philo->last_meal = time_elapsed(philo);
 	philo->n_meals--;
-	pthread_mutex_unlock(&philo->args->chomp);
+	//pthread_mutex_unlock(&philo->args->chomp);
 	drop_forks(philo, philo->num - 1,
 		philo->num % philo->args->n_philo, 0);
 	return (0);
