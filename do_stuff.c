@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 10:09:14 by nvideira          #+#    #+#             */
-/*   Updated: 2022/10/10 10:10:03 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/10/11 11:46:05 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int	eating(t_philo *philo)
 		return (1);
 	}
 	print_status(philo, EATING);
-	usleep(philo->args->time_eat * 1000);
 	philo->last_meal = time_elapsed(philo);
+	usleep(philo->args->time_eat * 1000);
 	philo->n_meals--;
 	pthread_mutex_unlock(&philo->args->chomp);
 	drop_forks(philo, philo->num - 1,
