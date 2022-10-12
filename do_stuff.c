@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 10:09:14 by nvideira          #+#    #+#             */
-/*   Updated: 2022/10/12 10:15:35 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/10/12 11:20:32 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,9 @@ int	eating(t_philo *philo)
 		return (1);
 	}
 	print_status(philo, EATING);
+	philo->last_meal = philo->current_time + (long long)philo->args->time_eat;
 	usleep(philo->args->time_eat * 1000);
-	philo->last_meal = philo->current_time;
 	philo->n_meals--;
-	if (check_death(philo))
-	{
-		drop_forks(philo, philo->num - 1,
-			philo->num % philo->args->n_philo);
-		return (1);
-	}
 	drop_forks(philo, philo->num - 1,
 		philo->num % philo->args->n_philo);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 18:43:41 by nvideira          #+#    #+#             */
-/*   Updated: 2022/10/12 09:31:45 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/10/12 11:18:55 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,16 @@ int	grab_forks(t_philo *philo, int left, int right)
 		left = right;
 		right = swap;
 	}
-	pthread_mutex_lock(&philo->args->fork[left]);
-	pthread_mutex_lock(&philo->args->fork[right]);
+	if (philo->num % 2 == 1)
+	{
+		pthread_mutex_lock(&philo->args->fork[left]);
+		pthread_mutex_lock(&philo->args->fork[right]);
+	}
+	else
+	{
+		pthread_mutex_lock(&philo->args->fork[right]);
+		pthread_mutex_lock(&philo->args->fork[left]);
+	}
 	print_status(philo, FORKING);
 	return (0);
 }
@@ -71,6 +79,14 @@ void	drop_forks(t_philo *philo, int left, int right)
 		left = right;
 		right = swap;
 	}
-	pthread_mutex_unlock(&philo->args->fork[left]);
-	pthread_mutex_unlock(&philo->args->fork[right]);
+	if (philo->num % 2 == 1)
+	{
+		pthread_mutex_unlock(&philo->args->fork[left]);
+		pthread_mutex_unlock(&philo->args->fork[right]);
+	}
+	else
+	{
+		pthread_mutex_unlock(&philo->args->fork[right]);
+		pthread_mutex_unlock(&philo->args->fork[left]);
+	}
 }
