@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 18:43:41 by nvideira          #+#    #+#             */
-/*   Updated: 2022/10/08 20:54:47 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/10/12 09:31:45 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	grab_forks(t_philo *philo, int left, int right)
 	return (0);
 }
 
-void	drop_forks(t_philo *philo, int left, int right, int flag)
+void	drop_forks(t_philo *philo, int left, int right)
 {
 	int	swap;
 
@@ -73,6 +73,4 @@ void	drop_forks(t_philo *philo, int left, int right, int flag)
 	}
 	pthread_mutex_unlock(&philo->args->fork[left]);
 	pthread_mutex_unlock(&philo->args->fork[right]);
-	if (!flag)
-		print_status(philo, UNFORKING);
 }

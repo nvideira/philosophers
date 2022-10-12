@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:02:11 by nvideira          #+#    #+#             */
-/*   Updated: 2022/10/10 15:35:23 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/10/12 09:43:51 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_philo{
 	int				n_meals;
 	long long		last_meal;
 	long long		start_time;
+	long long		current_time;
 }	t_philo;
 
 long long	ft_atoi(const char *str);
@@ -56,7 +57,7 @@ t_philo		philo_create(int num, t_args *args);
 int			init_mutex(t_args *args);
 void		destroy_mutex(t_args *args);
 int			grab_forks(t_philo *philo, int left, int right);
-void		drop_forks(t_philo *philo, int left, int right, int flag);
+void		drop_forks(t_philo *philo, int left, int right);
 int			check_death(t_philo *philo);
 long long	time_elapsed(t_philo *philo);
 void		print_status(t_philo *philo, int status);
