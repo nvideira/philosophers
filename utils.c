@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 18:43:41 by nvideira          #+#    #+#             */
-/*   Updated: 2022/10/12 11:18:55 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/10/13 10:36:04 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,6 @@ void	destroy_mutex(t_args *args)
 
 int	grab_forks(t_philo *philo, int left, int right)
 {
-	int	swap;
-
-	if (right < left)
-	{
-		swap = left;
-		left = right;
-		right = swap;
-	}
 	if (philo->num % 2 == 1)
 	{
 		pthread_mutex_lock(&philo->args->fork[left]);
@@ -71,14 +63,6 @@ int	grab_forks(t_philo *philo, int left, int right)
 
 void	drop_forks(t_philo *philo, int left, int right)
 {
-	int	swap;
-
-	if (right < left)
-	{
-		swap = left;
-		left = right;
-		right = swap;
-	}
 	if (philo->num % 2 == 1)
 	{
 		pthread_mutex_unlock(&philo->args->fork[left]);
