@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:30:57 by nvideira          #+#    #+#             */
-/*   Updated: 2022/10/08 20:10:14 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:17:18 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	main(int ac, char **av)
 	if (ac < 5 || ac > 6)
 		return (printf("Wrong number of arguments.\n"));
 	if (!get_args(&args, av))
-		return (printf("Bad input"));
+		return (printf("Bad input.\n"));
 	if (args.n_philo == 1)
 		return (printf("%lld: 1 died\n", args.time_die));
 	philo = (t_philo *)malloc(args.n_philo * sizeof(t_philo));

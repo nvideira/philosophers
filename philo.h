@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:02:11 by nvideira          #+#    #+#             */
-/*   Updated: 2022/10/16 20:55:57 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:21:32 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_philo{
 	int				n_meals;
 	long long		last_meal;
 	long long		start_time;
-	long long		current_time;
+	long long		c_time;
 }	t_philo;
 
 long long	ft_atoi(const char *str);

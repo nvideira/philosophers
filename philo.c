@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 23:15:44 by nvideira          #+#    #+#             */
-/*   Updated: 2022/10/10 10:09:58 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:21:32 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 long long	time_elapsed(t_philo *philo)
 {
-	struct timeval	current_time;
+	struct timeval	c_time;
 	long long		diff;
 
-	gettimeofday(&current_time, NULL);
-	diff = current_time.tv_sec * 1000;
-	diff += current_time.tv_usec / 1000;
+	gettimeofday(&c_time, NULL);
+	diff = c_time.tv_sec * 1000;
+	diff += c_time.tv_usec / 1000;
 	diff -= philo->start_time;
 	return (diff);
 }
