@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 10:09:14 by nvideira          #+#    #+#             */
-/*   Updated: 2022/10/12 11:20:32 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/10/16 21:15:01 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ int	eating(t_philo *philo)
 	philo->state = EATING;
 	if (check_death(philo))
 		return (1);
-	grab_forks(philo, philo->num - 1,
-		philo->num % philo->args->n_philo);
-	if (check_death(philo))
+	philo->current_time = time_elapsed(philo);
+	if (grab_forks(philo, philo->num - 1,
+			philo->num % philo->args->n_philo))
 	{
 		drop_forks(philo, philo->num - 1,
 			philo->num % philo->args->n_philo);
@@ -36,7 +36,7 @@ int	eating(t_philo *philo)
 	}
 	print_status(philo, EATING);
 	philo->last_meal = philo->current_time + (long long)philo->args->time_eat;
-	usleep(philo->args->time_eat * 1000);
+	smart_sleep(philo, philo->args->time_eat);
 	philo->n_meals--;
 	drop_forks(philo, philo->num - 1,
 		philo->num % philo->args->n_philo);
@@ -48,7 +48,7 @@ int	snoring(t_philo *philo)
 	philo->state = SLEEPING;
 	if (check_death(philo))
 		return (1);
+	smart_sleep(philo, philo->args->time_sleep);
 	print_status(philo, SLEEPING);
-	usleep(philo->args->time_sleep * 1000);
 	return (0);
 }
