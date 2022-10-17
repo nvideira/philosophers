@@ -24,9 +24,9 @@ int	brainstorming(t_philo *philo)
 int	eating(t_philo *philo)
 {
 	philo->state = EATING;
+	philo->c_time = time_elapsed(philo);
 	if (check_death(philo))
 		return (1);
-	philo->c_time = time_elapsed(philo);
 	if (grab_forks(philo, philo->num - 1,
 			philo->num % philo->args->n_philo))
 	{
@@ -35,7 +35,7 @@ int	eating(t_philo *philo)
 		return (1);
 	}
 	print_status(philo, EATING);
-	philo->last_meal = philo->c_time;
+	philo->last_meal = time_elapsed(philo);
 	smart_sleep(philo, philo->args->time_eat);
 	philo->n_meals--;
 	drop_forks(philo, philo->num - 1,

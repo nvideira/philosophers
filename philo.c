@@ -35,7 +35,7 @@ int	check_death(t_philo *philo)
 	if (time_elapsed(philo) - philo->last_meal > philo->args->time_die)
 	{
 		philo->state = DEAD;
-		printf("%lld: %d died.\n", time_elapsed(philo), philo->num);
+		printf("%lld %d died\n", time_elapsed(philo), philo->num);
 		philo->args->dead = 1;
 		pthread_mutex_unlock(&philo->args->death_trigger);
 		return (1);
@@ -57,7 +57,28 @@ t_philo	philo_create(int num, t_args *args)
 	philo.start_time += (time.tv_usec / 1000);
 	philo.n_meals = args->limit;
 	philo.last_meal = 0;
+	philo.n_forks = 0;
 	return (philo);
+}
+
+int	choose_action(t_philo *philo)
+{
+	if (philo->state == EATING)
+	{
+		if (snoring(philo))
+			return (1);
+	}
+	else if (philo->state == SLEEPING)
+	{
+		if (brainstorming(philo))
+			return (1);
+	}
+	else if (philo->state == THINKING)
+	{
+		if (eating(philo))
+			return (1);
+	}
+	return (0);
 }
 
 void	*routine(void *arg)
@@ -65,24 +86,11 @@ void	*routine(void *arg)
 	t_philo		*philo;
 
 	philo = (t_philo *)arg;
+	if (philo->num % 2 == 0)
+		usleep(1000);
 	while (philo->n_meals)
 	{
-		if (philo->state == EATING)
-		{
-			if (snoring(philo))
-				break ;
-		}
-		else if (philo->state == SLEEPING)
-		{
-			if (brainstorming(philo))
-				break ;
-		}
-		else if (philo->state == THINKING)
-		{
-			if (eating(philo))
-				break ;
-		}
-		else
+		if (choose_action(philo))
 			break ;
 	}
 	return (NULL);

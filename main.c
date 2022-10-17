@@ -40,6 +40,7 @@ int	setup(t_philo *philo, t_args *args)
 	if (!philo)
 		return (0);
 	args->fork = malloc(args->n_philo * sizeof(pthread_mutex_t));
+	args->f_bool = malloc(args->n_philo + 1 * sizeof(int));
 	if (!init_mutex(args))
 		return (0);
 	while (++i < args->n_philo)

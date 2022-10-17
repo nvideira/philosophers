@@ -6,7 +6,7 @@
 #    By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/28 21:10:24 by nvideira          #+#    #+#              #
-#    Updated: 2022/10/10 15:29:07 by nvideira         ###   ########.fr        #
+#    Updated: 2022/10/17 18:48:15 by nvideira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ SRCS=	main.c\
 		utils.c\
 		print.c\
 		do_stuff.c\
-		libft.c
+		libft.c\
+		fork_stuff.c
 
 OBJS=	${SRCS:.c=.o}
 

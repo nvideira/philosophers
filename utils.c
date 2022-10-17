@@ -6,7 +6,7 @@
 /*   By: nvideira <nvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 18:43:41 by nvideira          #+#    #+#             */
-/*   Updated: 2022/10/16 23:21:00 by nvideira         ###   ########.fr       */
+/*   Updated: 2022/10/17 18:47:25 by nvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ int	init_mutex(t_args *args)
 	{
 		if (pthread_mutex_init(&(args->fork[i]), NULL))
 			return (0);
+		args->f_bool[i] = 0;
 		i++;
 	}
+	args->f_bool[i] = '\0';
 	if (pthread_mutex_init(&(args->death_trigger), NULL)
 		|| pthread_mutex_init(&(args->chomp), NULL))
 		return (0);
@@ -52,47 +54,4 @@ void	destroy_mutex(t_args *args)
 	if (pthread_mutex_destroy(&(args->death_trigger))
 		|| pthread_mutex_destroy(&(args->chomp)))
 		printf("Death & Chomp Mutex destroy failed.\n");
-}
-
-int	grab_forks(t_philo *philo, int left, int right)
-{
-	if (philo->num % 2 == 0)
-	{
-		pthread_mutex_lock(&philo->args->fork[left]);
-		pthread_mutex_lock(&philo->args->fork[right]);
-	}
-	else
-	{
-		pthread_mutex_lock(&philo->args->fork[right]);
-		pthread_mutex_lock(&philo->args->fork[left]);
-	}
-	if (time_elapsed(philo) - philo->last_meal > philo->args->time_die)
-	{
-		pthread_mutex_lock(&philo->args->death_trigger);
-		if (philo->args->dead != 1)
-		{
-			philo->state = DEAD;
-			philo->args->dead = 1;
-			printf("%lld: %d died.\n", philo->c_time + philo->args->time_die,
-				philo->num);
-		}
-		pthread_mutex_unlock(&philo->args->death_trigger);
-		return (1);
-	}
-	print_status(philo, FORKING);
-	return (0);
-}
-
-void	drop_forks(t_philo *philo, int left, int right)
-{
-	if (philo->num % 2 == 1)
-	{
-		pthread_mutex_unlock(&philo->args->fork[right]);
-		pthread_mutex_unlock(&philo->args->fork[left]);
-	}
-	else
-	{
-		pthread_mutex_unlock(&philo->args->fork[left]);
-		pthread_mutex_unlock(&philo->args->fork[right]);
-	}
 }

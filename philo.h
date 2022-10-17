@@ -33,6 +33,7 @@ typedef struct s_args{
 	int				time_sleep;
 	int				limit;
 	int				dead;
+	int				*f_bool;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	chomp;
 	pthread_mutex_t	death_trigger;
@@ -48,6 +49,7 @@ typedef struct s_philo{
 	long long		last_meal;
 	long long		start_time;
 	long long		c_time;
+	int				n_forks;
 }	t_philo;
 
 long long	ft_atoi(const char *str);
@@ -65,4 +67,5 @@ int			brainstorming(t_philo *philo);
 int			eating(t_philo *philo);
 int			snoring(t_philo *philo);
 void		smart_sleep(t_philo *philo, int time);
+void		take_fork(t_philo *philo, int side);
 #endif
